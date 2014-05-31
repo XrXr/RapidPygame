@@ -21,7 +21,7 @@ class ImageLoader:
     def load_image(self, path, convert_alpha=False):
         """
         Load an image file
-        :param path: a path to the image in list format
+        :param path: Path to the image in list format
         :param convert_alpha: *boolean* convert surfaces with convert_alpha()
         :return: surface
         """
@@ -29,11 +29,30 @@ class ImageLoader:
             return load(self.get_path(path)).convert_alpha()
         return load(self.get_path(path)).convert()
 
+    def load_all(self, path, convert_alpha=False):
+        """
+        Load all files in a directory. Assume they are all images.
+        :param path: Path to a directory
+        :param convert_alpha: *boolean* convert surfaces with convert_alpha()
+        :return: Dict mapping the striped filename to its surface
+        """
+        result = dict()
+        dir_path = self.get_path(path)
+        for name in os.listdir(dir_path):
+            file_path = join(dir_path, name)
+            if isfile(file_path):
+                striped = splitext(name)[0]
+                if convert_alpha:
+                    result[striped] = load(file_path).convert_alpha()
+                    continue
+                result[striped] = load(file_path).convert()
+        return result
+
     def load_frames(self, path, frames, convert_alpha=False):
         """
         Load a sequence of image named 1.b...*frames*.b from *path*
-        :param path: a path in list format pointing to a directory
-        :param frames: number of frames to load
+        :param path: Path in list format pointing to a directory
+        :param frames: Number of frames to load
         :param convert_alpha: *boolean* convert surfaces with convert_alpha()
         :return: a list of surfaces
         """
