@@ -5,6 +5,8 @@
 """
 import sys
 import os
+from random import randrange
+
 current_path = os.path.dirname(os.path.realpath(__file__))
 # import from one level up
 sys.path.append(os.path.split(current_path)[0])
@@ -18,7 +20,8 @@ mgr = LevelManager(level_path, None)
 mgr.load_level([])
 mgr.next_level()
 for rect in mgr.current_level.interpreted:
-    a.fill(pygame.Color("green"), rect)
+    color = (randrange(0, 256), randrange(0, 256), randrange(0, 256))
+    a.fill(pygame.Color(color[0], color[1], color[2]), rect)
 pygame.display.update()
 while True:
     for e in pygame.event.get():

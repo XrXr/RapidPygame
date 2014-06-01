@@ -8,6 +8,7 @@ from os.path import join
 from rapidpg.loader.image import ImageLoader
 from copy import deepcopy
 
+
 class Level:
     """
     Responsible for handling player movement
@@ -86,37 +87,55 @@ class Level:
         exits = []
         for line in range(len(raw)):
             for char in range(len(raw[line])):
+                #  +1 to line since the rect directly under a process rect would collide
+                if Level._processed(char * self.tile_width,
+                                    (line + 1) * self.tile_width, rect_list):
+                    continue
                 if raw[line][char] in collide_set:
-                    height = 1
                     tmp_char = char
-                    temp_line = line
-                    while True:
-                        try:
-                            if raw[line][tmp_char] in collide_set:
-                                raw[line][tmp_char] = None
-                                height = 1
-                                while True:
-                                    try:
-                                        if raw[temp_line][char] in collide_set:
-                                            height += 1
-                                            raw[temp_line][char] = None
-                                        else:
+                    width = 0
+                    try:
+                        lowest = float("inf")
+                        while True:
+                            try:
+                                if raw[line][tmp_char] in collide_set:
+                                    width += 1
+                                    possible_height = 1
+                                    tmp_line = line
+                                    while True:  # go down
+                                        try:
+                                            tmp_line += 1
+                                            if raw[tmp_line][tmp_char] in collide_set:
+                                                possible_height += 1
+                                            else:
+                                                break
+                                        except IndexError:
                                             break
-                                        temp_line += 1
-                                    except IndexError:
-                                        break
+                                    if possible_height < lowest:
+                                        lowest = possible_height
+                                else:
+                                    break
+                                tmp_char += 1
+                            except IndexError:
                                 break
-                            else:
-                                break
-                        except IndexError:
-                            break
+                    except IndexError:
+                        pass
+                    height = lowest if lowest != float("inf") else 1
                     rect_list.append(Rect(char * tile_width, line * tile_width,
-                                          tile_width, height * tile_width))
+                                          width * tile_width, height * tile_width))
                 elif raw[line][char] == exit_char:
                     spawn = (char * tile_width, line * tile_width)
                 elif raw[line][char] == spawn_char:
                     exits.append(Rect(char * tile_width, 0, tile_width, level_height))
         return rect_list, spawn, exits
+
+    @staticmethod
+    def _processed(x, y, rect_list):
+        for rect in rect_list:
+            if rect.x <= x <= rect.x + rect.width and \
+               rect.y <= y <= rect.y + rect.height:
+                return True
+        return False
 
 
 class LevelManager:
