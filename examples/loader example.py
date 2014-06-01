@@ -2,6 +2,7 @@
  Rapid Pygame
  https://github.com/XrXr/RapidPygame
  License: MIT
+ example for loading images
 """
 import sys
 import os

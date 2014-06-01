@@ -28,9 +28,6 @@ class Level:
         self.player = player
         self.config = config
         self.data = data
-        # making a copy since interpreting a level is destructive
-        # and the original is needed for drawing
-        self.map = deepcopy(data)
         self.tiles = tiles
         self.background = background
         for k in tiles:
@@ -40,8 +37,8 @@ class Level:
 
     def fill_bottom(self):
         """
-        return a list of rects that fills all the space below the interpreted level
-        Destructive
+        Return a list of rects that fills all the space below the interpreted level
+        *Broken*
         """
         rect_list = []
         for l in range(len(self.data)):
@@ -67,7 +64,7 @@ class Level:
 
     def interpret(self):
         """
-        Interpret a level. Destructive.
+        Interpret a level.
         :return: Three tuple that looks like (rect_list, spawn, exits)
         """
         exit_char = 'e'
@@ -123,9 +120,9 @@ class Level:
                     height = lowest if lowest != float("inf") else 1
                     rect_list.append(Rect(char * tile_width, line * tile_width,
                                           width * tile_width, height * tile_width))
-                elif raw[line][char] == exit_char:
-                    spawn = (char * tile_width, line * tile_width)
                 elif raw[line][char] == spawn_char:
+                    spawn = (char * tile_width, line * tile_width)
+                elif raw[line][char] == exit_char:
                     exits.append(Rect(char * tile_width, 0, tile_width, level_height))
         return rect_list, spawn, exits
 

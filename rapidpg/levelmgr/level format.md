@@ -32,3 +32,4 @@ the simplest _map_ file must contain a _collision_ config
 
 The data portion of _map_ are characters that each represent a tile in the level landscape. Their
 value match the names of files under the _tiles_ folder. _e_ is used to indicate the exit of a level
+_e_ character will create an exit zone that is as long as the height of the level and as wide as a tile
