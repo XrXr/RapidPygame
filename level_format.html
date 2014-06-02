@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Level format &mdash; Rapid Pygame 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Rapid Pygame 0.1 documentation" href="index.html" />
+    <link rel="prev" title="Player class" href="player.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="player.html" title="Player class"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Rapid Pygame 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="level-format">
+<h1>Level format<a class="headerlink" href="#level-format" title="Permalink to this headline">¶</a></h1>
+<p>A level is a folder structure that contains the background, tile set and the landscape of the level.
+For collision based levels, the structure will look like:</p>
+<div class="highlight-python"><div class="highlight"><pre>tiles/
+    1.png
+    2.png
+    3.png
+    ...
+map
+background
+</pre></div>
+</div>
+<p>The simplest level must have the map file and one image file under the tiles folder.</p>
+<p>Tiles images must be square and have consistent file extension.</p>
+</div>
+<div class="section" id="format-of-map">
+<h1>Format of <em>map</em><a class="headerlink" href="#format-of-map" title="Permalink to this headline">¶</a></h1>
+<p>A <em>map</em> file represents the landscape of the level and some of its property. It is consist of two
+parts, a config portion and a data portion. The two is separated by an empty line</p>
+<dl class="docutils">
+<dt>The config portion follows the following format:</dt>
+<dd><tt class="docutils literal"><span class="pre">config_name</span> <span class="pre">config_value</span></tt></dd>
+</dl>
+<p>Here is the list of config names and their description:</p>
+<blockquote>
+<div><ul class="simple">
+<li><em>collision</em>: The name of tiles that should collide with the player separated by &#8221;,&#8221;.</li>
+</ul>
+<blockquote>
+<div>Each entry must be a single character or a range take looks like <em>&#8220;start...end&#8221;</em> where start start and end are both
+between 1 and 10 (inclusive)</div></blockquote>
+</div></blockquote>
+<p>the simplest <em>map</em> file must contain a <em>collision</em> config</p>
+<p>The data portion of <em>map</em> are characters that each represent a tile in the level landscape. Their
+value match the names of files under the <em>tiles</em> folder. <em>e</em> is used to indicate the exit of a level
+<em>e</em> character will create an exit zone that is as long as the height of the level and as wide as a tile</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Level format</a></li>
+<li><a class="reference internal" href="#format-of-map">Format of <em>map</em></a></li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="player.html"
+                        title="previous chapter">Player class</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/level_format.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="player.html" title="Player class"
+             >previous</a> |</li>
+        <li><a href="index.html">Rapid Pygame 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, XrXr.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>
