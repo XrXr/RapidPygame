@@ -1,0 +1,275 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Level managers &mdash; Rapid Pygame 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Rapid Pygame 0.1 documentation" href="index.html" />
+    <link rel="next" title="Image loader" href="loader.html" />
+    <link rel="prev" title="Welcome to Rapid Pygame’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="loader.html" title="Image loader"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Rapid Pygame’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Rapid Pygame 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="level-managers">
+<h1>Level managers<a class="headerlink" href="#level-managers" title="Permalink to this headline">¶</a></h1>
+<p>Rapid Pygame provides a level manager that keeps tract of level and is capable of level parsing</p>
+<span class="target" id="module-rapidpg.levelmgr.collision"></span><dl class="class">
+<dt id="rapidpg.levelmgr.collision.Level">
+<em class="property">class </em><tt class="descclassname">rapidpg.levelmgr.collision.</tt><tt class="descname">Level</tt><big>(</big><em>config</em>, <em>data</em>, <em>tiles</em>, <em>background=None</em>, <em>player=None</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Responsible for handling player movement
+and level related collision detection. The structure of a level can be found in
+<em>level format.md</em></p>
+<p>Contains the interpreted level and methods that should be called every frame
+to update the level. Also handle player movement. Since the interpreted level
+is exposed, the built in movement method doesn&#8217;t have to be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>player</strong> &#8211; The player object to manipulate</li>
+<li><strong>config</strong> &#8211; The config dict of the level</li>
+<li><strong>data</strong> &#8211; The uninterpreted, but parsed level</li>
+<li><strong>tiles</strong> &#8211; A dict of tile sets, mapping their name to a surface</li>
+<li><strong>background</strong> &#8211; A list of backgrounds, can be None</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="rapidpg.levelmgr.collision.Level.interpreted">
+<tt class="descname">interpreted</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.interpreted" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of rect representing the landscape of the level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rapidpg.levelmgr.collision.Level.draw_list">
+<tt class="descname">draw_list</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.draw_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of tuple of surfaces and rect. Drawing them with <em>Suface.blit</em>
+will show the level</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.Level.fill_bottom">
+<tt class="descname">fill_bottom</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.fill_bottom" title="Permalink to this definition">¶</a></dt>
+<dd><div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last"><em>Broken</em></p>
+</div>
+<p>Return a list of rects that fills all the space
+below the interpreted level</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="rapidpg.levelmgr.collision.Level.find_max">
+<em class="property">static </em><tt class="descname">find_max</tt><big>(</big><em>rect_list</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.find_max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the rect with the largest y in the rect_list</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="rapidpg.levelmgr.collision.Level.find_min">
+<em class="property">static </em><tt class="descname">find_min</tt><big>(</big><em>rect_list</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.find_min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the rect with the lowest y in the rect_list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.Level.get_dimensions">
+<tt class="descname">get_dimensions</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.get_dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the width and height of the level</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">(width, height)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.Level.interpret">
+<tt class="descname">interpret</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.interpret" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpret a level.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Three tuple that looks like (rect_list, spawn, exits)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.Level.update">
+<tt class="descname">update</tt><big>(</big><em>movement</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method should be called every frame to update the location of
+the player and the environment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>movement</strong> &#8211; Dict with keys <em>up, down, left, right</em> mapping to booleans</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rapidpg.levelmgr.collision.LevelManager">
+<em class="property">class </em><tt class="descclassname">rapidpg.levelmgr.collision.</tt><tt class="descname">LevelManager</tt><big>(</big><em>origin</em>, <em>player=None</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.LevelManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load and manage levels.</p>
+<p>Takes a path to the level file and the player object to manipulate</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>origin</strong> &#8211; <em>string</em> origin of loading</li>
+<li><strong>player</strong> &#8211; An instance of a class that has a rect property</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="rapidpg.levelmgr.collision.LevelManager.current_level">
+<tt class="descname">current_level</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.LevelManager.current_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current level object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.LevelManager.load_level">
+<tt class="descname">load_level</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.LevelManager.load_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a level relative to the origin</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> &#8211; Path to the level in list format</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.LevelManager.next_level">
+<tt class="descname">next_level</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.LevelManager.next_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Advance current_level</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.LevelManager.previous_level">
+<tt class="descname">previous_level</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.LevelManager.previous_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set current_level to the previous level</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to Rapid Pygame&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="loader.html"
+                        title="next chapter">Image loader</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/levelmgr.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="loader.html" title="Image loader"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Rapid Pygame’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">Rapid Pygame 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, XrXr.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

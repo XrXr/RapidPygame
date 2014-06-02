@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Player class &mdash; Rapid Pygame 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Rapid Pygame 0.1 documentation" href="index.html" />
+    <link rel="prev" title="Image loader" href="loader.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="loader.html" title="Image loader"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Rapid Pygame 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-rapidpg.player">
+<span id="player-class"></span><h1>Player class<a class="headerlink" href="#module-rapidpg.player" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="rapidpg.player.Player">
+<em class="property">class </em><tt class="descclassname">rapidpg.player.</tt><tt class="descname">Player</tt><big>(</big><em>surfs</em>, <em>interval</em><big>)</big><a class="headerlink" href="#rapidpg.player.Player" title="Permalink to this definition">¶</a></dt>
+<dd><p>An instance is compatible with the level manager. Note that if
+<a class="reference internal" href="levelmgr.html#rapidpg.levelmgr.collision.Level.update" title="rapidpg.levelmgr.collision.Level.update"><tt class="xref py py-func docutils literal"><span class="pre">rapidpg.levelmgr.collision.Level.update()</span></tt></a> is not used, a player
+instance doesn&#8217;t have to be passed to the level manager</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>surfs</strong> &#8211; A list of surfaces for animation</li>
+<li><strong>interval</strong> &#8211; The interval between animation updates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rapidpg.player.Player.jump_progress">
+<tt class="descname">jump_progress</tt><big>(</big><em>landed=False</em><big>)</big><a class="headerlink" href="#rapidpg.player.Player.jump_progress" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.player.Player.move">
+<tt class="descname">move</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#rapidpg.player.Player.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for <em>plr.rect.move_ip</em>
+:return:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.player.Player.start_jump">
+<tt class="descname">start_jump</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.player.Player.start_jump" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="rapidpg.player.Player.surf">
+<tt class="descname">surf</tt><a class="headerlink" href="#rapidpg.player.Player.surf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="loader.html"
+                        title="previous chapter">Image loader</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/player.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="loader.html" title="Image loader"
+             >previous</a> |</li>
+        <li><a href="index.html">Rapid Pygame 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, XrXr.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

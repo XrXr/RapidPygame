@@ -1,0 +1,4 @@
+Intro
+========================================
+
+Rapid pygame is a library designed to make game development using Pygame quicker
