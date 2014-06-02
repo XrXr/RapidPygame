@@ -9,10 +9,12 @@ Rapid pygame is a library designed to make game development using Pygame quicker
 that allows developers to focus more on gameplay features rather than basic components.
 
 .. toctree::
+    :titlesonly:
+    
     levelmgr
     loader
     player
-    level_format
+    Level format <level_format>
     
 Examples
 ========

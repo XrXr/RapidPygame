@@ -63,28 +63,24 @@ background
 </div>
 <p>The simplest level must have the map file and one image file under the tiles folder.</p>
 <p>Tiles images must be square and have consistent file extension.</p>
-</div>
 <div class="section" id="format-of-map">
-<h1>Format of <em>map</em><a class="headerlink" href="#format-of-map" title="Permalink to this headline">¶</a></h1>
+<h2>Format of <em>map</em><a class="headerlink" href="#format-of-map" title="Permalink to this headline">¶</a></h2>
 <p>A <em>map</em> file represents the landscape of the level and some of its property. It is consist of two
 parts, a config portion and a data portion. The two is separated by an empty line</p>
-<dl class="docutils">
-<dt>The config portion follows the following format:</dt>
-<dd><tt class="docutils literal"><span class="pre">config_name</span> <span class="pre">config_value</span></tt></dd>
-</dl>
+<p>The config portion follows the following format:</p>
+<blockquote>
+<div><tt class="docutils literal"><span class="pre">config_name</span> <span class="pre">config_value</span></tt></div></blockquote>
 <p>Here is the list of config names and their description:</p>
-<blockquote>
-<div><ul class="simple">
-<li><em>collision</em>: The name of tiles that should collide with the player separated by &#8221;,&#8221;.</li>
+<ul class="simple">
+<li><em>collision</em>: The name of tiles that should collide with the player separated by &#8221;,&#8221;.
+Each entry must be a single character or a range take looks like <em>&#8220;start...end&#8221;</em> where start start and end are both
+between 1 and 10 (inclusive)</li>
 </ul>
-<blockquote>
-<div>Each entry must be a single character or a range take looks like <em>&#8220;start...end&#8221;</em> where start start and end are both
-between 1 and 10 (inclusive)</div></blockquote>
-</div></blockquote>
 <p>the simplest <em>map</em> file must contain a <em>collision</em> config</p>
 <p>The data portion of <em>map</em> are characters that each represent a tile in the level landscape. Their
 value match the names of files under the <em>tiles</em> folder. <em>e</em> is used to indicate the exit of a level
 <em>e</em> character will create an exit zone that is as long as the height of the level and as wide as a tile</p>
+</div>
 </div>
 
 
@@ -95,8 +91,10 @@ value match the names of files under the <em>tiles</em> folder. <em>e</em> is us
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Level format</a></li>
+<li><a class="reference internal" href="#">Level format</a><ul>
 <li><a class="reference internal" href="#format-of-map">Format of <em>map</em></a></li>
+</ul>
+</li>
 </ul>
 
   <h4>Previous topic</h4>
