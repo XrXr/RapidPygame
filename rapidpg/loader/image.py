@@ -1,19 +1,21 @@
-"""
- Rapid Pygame
- https://github.com/XrXr/RapidPygame
- License: MIT
-"""
+#  Rapid Pygame
+#  https://github.com/XrXr/RapidPygame
+#  License: MIT
 import os
 from os.path import join, isfile, splitext
 from pygame.image import load
 
 
 class ImageLoader:
+    """
+    Convenient class for loading images using relative path painless
+    """
     def __init__(self, origin):
         """
         Create a loader pointing at the *origin*. Any loading is relative to the *origin*
         Paths passed to the methods of this object are lists where each element is either
         a directory name or a file name. ([dir1,dir2,file.txt])
+
         :param origin: path string
         """
         self.origin = origin
@@ -21,6 +23,7 @@ class ImageLoader:
     def load_image(self, path, convert_alpha=False):
         """
         Load an image file
+
         :param path: Path to the image in list format
         :param convert_alpha: *boolean* convert surfaces with convert_alpha()
         :return: surface
@@ -32,6 +35,7 @@ class ImageLoader:
     def load_all(self, path, convert_alpha=False):
         """
         Load all files in a directory. Assume they are all images.
+
         :param path: Path to a directory
         :param convert_alpha: *boolean* convert surfaces with convert_alpha()
         :return: Dict mapping the striped filename to its surface
@@ -51,6 +55,7 @@ class ImageLoader:
     def load_frames(self, path, frames, convert_alpha=False):
         """
         Load a sequence of image named 1.b...*frames*.b from *path*
+
         :param path: Path in list format pointing to a directory
         :param frames: Number of frames to load
         :param convert_alpha: *boolean* convert surfaces with convert_alpha()
@@ -77,6 +82,7 @@ class ImageLoader:
     def get_path(self, path):
         """
         Returns a path string relative to the origin
+
         :param path: a path in list format
         :return: path string
         """

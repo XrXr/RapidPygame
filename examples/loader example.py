@@ -1,8 +1,8 @@
+#  Rapid Pygame
+#  https://github.com/XrXr/RapidPygame
+#  License: MIT
 """
- Rapid Pygame
- https://github.com/XrXr/RapidPygame
- License: MIT
- example for loading images
+Example for loading images using the Image loader class
 """
 import sys
 import os
