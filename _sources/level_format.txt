@@ -32,6 +32,7 @@ Here is the list of config names and their description:
 * *collision*: The name of tiles that should collide with the player separated by ",".
   Each entry must be a single character or a range take looks like *"start...end"* where start start and end are both
   between 1 and 10 (inclusive)
+* *gravity*: Downward acceleration of the player, in :math:`pixels/s^2`
 
 the simplest *map* file must contain a *collision* config
 
