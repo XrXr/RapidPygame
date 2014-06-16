@@ -4,6 +4,7 @@
 from pygame.rect import Rect
 from os.path import join
 from rapidpg.loader.image import ImageLoader
+from .camera import Camera
 import math
 
 
@@ -32,7 +33,7 @@ class Level:
         .. py:attribute:: draw_list
 
             A list of tuple of surfaces and rect. Drawing them with *Suface.blit*
-            will show the level
+            will show the level and the player
         """
 
         self.player = player
@@ -43,8 +44,16 @@ class Level:
         for k in tiles:
             self.tile_width = tiles[k].get_rect().width
             break
+
+        self.level_height = len(self.data) * self.tile_width
+        self.level_width = len(self.data[0]) * self.tile_width
+        self.camera = Camera(self.config['resolution'],
+                             Rect((0, 0), (self.level_width, self.level_height)),
+                             player.speed)
         self.interpreted, self.spawn, self.exits = self.interpret()
-        self.draw_list = []
+
+    def _get_draw_list(self):
+        dl = []
         y = 0
         for l in self.data:
             x = 0
@@ -52,9 +61,15 @@ class Level:
                 if c == '0' or c == 'e':
                     x += 1
                     continue
-                self.draw_list.append((tiles[c], (x * self.tile_width, y * self.tile_width)))
+                dl.append((self.tiles[c],
+                           (x * self.tile_width - self.camera.rect.x,
+                            y * self.tile_width - self.camera.rect.y)))
                 x += 1
             y += 1
+        dl.append((self.player.surf, self.player.rect.move(-self.camera.rect.x, 0)))
+        return dl
+
+    draw_list = property(_get_draw_list)
 
     def update(self, movement):
         """
@@ -127,6 +142,7 @@ class Level:
                 self.player.move(self.player.speed, 0)
             self.player.dir = 'right'
 
+        self.camera.update(self.player.rect)
         return m
 
     def fill_bottom(self):
@@ -356,7 +372,12 @@ class LevelManager:
         def extract_float(s):
             return float(s.strip())
 
-        processors = {"collision": collision_reader, "gravity": extract_float}
+        def parse_resolution(s):
+            w, _, h = s.partition(" ")
+            return int(w), int(h)
+
+        processors = {"collision": collision_reader,
+                      "gravity": extract_float, "resolution": parse_resolution}
         config = dict()
         # populate dict
         for l in raw_config:
