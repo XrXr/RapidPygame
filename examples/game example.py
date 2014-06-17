@@ -8,9 +8,9 @@ current_path = os.path.dirname(os.path.realpath(__file__))
 # import from one level up
 sys.path.append(os.path.split(current_path)[0])
 import pygame
-from rapidpg.loader.image import ImageLoader
+from rapidpg import ImageLoader
 from rapidpg.levelmgr.collision import LevelManager
-from rapidpg.player import Player
+from rapidpg import Player
 
 pygame.init()
 a = pygame.display.set_mode((800, 600))
