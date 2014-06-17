@@ -51,7 +51,7 @@ while True:
                 movement_dict['right'] = False
     a.fill(pygame.Color('black'))
     v = manager.current_level.update(movement_dict)
-    for e in manager.current_level.draw_list:
+    for e in manager().draw_list:  # same thing as manager.current_level.draw_list
         a.blit(*e)
     # for e in v:
     # a.fill(pygame.Color("red"), e)

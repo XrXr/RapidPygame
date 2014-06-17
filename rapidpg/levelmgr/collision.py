@@ -66,7 +66,7 @@ class Level:
                             y * self.tile_width - self.camera.rect.y)))
                 x += 1
             y += 1
-        dl.append((self.player.surf, self.player.rect.move(-self.camera.rect.x, 0)))
+        dl.append((self.player.surf, self.player.rect.move(-self.camera.rect.x, -self.camera.rect.y)))
         return dl
 
     draw_list = property(_get_draw_list)
@@ -288,6 +288,7 @@ class Level:
                 min_rect = e
         return min_rect
 
+
 class LevelManager:
     """
     Load and manage levels.
@@ -303,6 +304,12 @@ class LevelManager:
         self.levels = []
         self._current_level = -1
         self.loader = ImageLoader(origin)
+
+    def __call__(self):
+        """
+        A shortcut for level_manager.current_level
+        """
+        return self._get_current_level()
 
     def load_level(self, path):
         """
