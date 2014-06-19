@@ -53,13 +53,13 @@ class Level:
                              Rect((0, 0), (self.level_width, self.level_height)),
                              player.speed)
 
-        self.background = []
+        self.backgrounds = []
         if backgrounds:
             for name, speed in config['background']:
                 surf = backgrounds[name]
                 if speed:
                     surf = self._construct_background(surf)
-                self.background.append([surf, surf.get_rect(), speed])
+                self.backgrounds.append([surf, surf.get_rect(), speed])
 
         self.interpreted, self.spawn, self.exits = self.interpret()
         self.player.rect.x, self.player.rect.y = self.spawn
@@ -68,7 +68,7 @@ class Level:
     def _get_draw_list(self):
         dl = []
         # backgrounds
-        for surf, rect, _ in self.background:
+        for surf, rect, _ in self.backgrounds:
             dl.append((surf, (rect.x, self.camera.rect.height - rect.height)))
         # landscape
         y = 0
@@ -91,23 +91,30 @@ class Level:
     draw_list = property(_get_draw_list)
 
     def _construct_background(self, surf):
-        goal = self.camera.rect.width * 3
         width = 0
         surf_width = surf.get_width()
-        while width < goal:
+        while width < self.camera.rect.width:
             width += surf_width
+        width *= 2
         constructed = Surface((width, surf.get_height()), pygame.SRCALPHA)
         x = 0
-        while x < width - surf_width:
+        while x < width:
             constructed.blit(surf, (x, 0))
             x += surf_width
         return constructed
 
     def _bg_left(self):
-        pass
+        for _, rect, speed in self.backgrounds:
+            if rect.move(-speed, 0).x < -rect.width / 2:
+                rect.x = 0
+            rect.move_ip(-speed, 0)
 
     def _bg_right(self):
-        pass
+        for _, rect, speed in self.backgrounds:
+            if rect.move(speed, 0).x > 0:
+                rect.x = -rect.width / 2
+            rect.move_ip(speed, 0)
+
 
     def update(self, movement):
         """
@@ -165,6 +172,7 @@ class Level:
                 self.player.move(-delta, 0)
                 m.append(self.interpreted[collision_test])
             else:
+                self._bg_right()
                 self.player.move(-self.player.speed, 0)
             self.player.dir = 'left'
 
@@ -177,6 +185,7 @@ class Level:
                 self.player.move(delta, 0)
                 m.append(self.interpreted[collision_test])
             else:
+                self._bg_left()
                 self.player.move(self.player.speed, 0)
             self.player.dir = 'right'
 
@@ -219,8 +228,8 @@ class Level:
 
         :return: (width, height)
         """
-        return len(self.data[0]) * self.tile_width, len(self.data) \
-               * self.tile_width
+        return len(self.data[0]) * self.tile_width, \
+            len(self.data) * self.tile_width
 
     def interpret(self):
         """
