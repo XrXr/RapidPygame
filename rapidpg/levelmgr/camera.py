@@ -17,30 +17,41 @@ class Camera:
         self.screen_res = screen_res
         self.rect = pygame.Rect((0, 0), screen_res)
 
+        self.x_bound = self.level_rect.width - self.rect.width
+        self.y_bound = self.level_rect.height - self.rect.height
+
         self.right_threshold = self.rect.width * right_threshold / 100
         self.left_threshold = self.rect.width * left_threshold / 100
         self.up_threshold = self.rect.height * up_threshold / 100
         self.down_threshold = self.rect.height * down_threshold / 100
 
     def pan_left(self):
+        if self.rect.x == 0:
+            return
         if self.rect.move(-self.horizontal_speed, 0).x < 0:
             self.rect.move_ip(-self.rect.x, 0)
         else:
             self.rect.move_ip(-self.horizontal_speed, 0)
 
     def pan_right(self):
+        if self.rect.x == self.x_bound:
+            return
         if self.rect.x + self.horizontal_speed + self.rect.width > self.level_rect.width:
             self.rect.move_ip((self.level_rect.width - (self.rect.x + self.rect.width)), 0)
         else:
             self.rect.move_ip(self.horizontal_speed, 0)
 
     def pan_down(self):
+        if self.rect.y == self.y_bound:
+            return
         if self.rect.y + self.vertical_speed + self.rect.height > self.level_rect.height:
-            self.rect.move_ip((self.level_rect.height - (self.rect.y + self.rect.height)), 0)
+            self.rect.move_ip(0, (self.level_rect.height - self.rect.y - self.rect.height))
         else:
             self.rect.move_ip(0, self.vertical_speed)
 
     def pan_up(self):
+        if self.rect.y == 0:
+            return
         if self.rect.move(0, -self.vertical_speed).y < 0:
             self.rect.move_ip(0, -self.rect.y)
         else:
@@ -48,8 +59,8 @@ class Camera:
 
     def snap_to(self, player_rect):
         propose = self.rect.move(0, 0)
-        propose.x = max(0, player_rect.x - self.screen_res[0] / 2)
-        propose.y = max(0, player_rect.y - self.screen_res[1] / 2)
+        propose.x = min(max(0, player_rect.x - self.screen_res[0] / 2), self.x_bound)
+        propose.y = min(max(0, player_rect.y - self.screen_res[1] / 2), self.y_bound)
         self.rect = propose
 
     def update(self, player_rect):

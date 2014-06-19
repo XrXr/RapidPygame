@@ -62,6 +62,8 @@ class Level:
                 self.background.append([surf, surf.get_rect(), speed])
 
         self.interpreted, self.spawn, self.exits = self.interpret()
+        self.player.rect.x, self.player.rect.y = self.spawn
+        self.camera.snap_to(self.player.rect)
 
     def _get_draw_list(self):
         dl = []
@@ -73,7 +75,7 @@ class Level:
         for l in self.data:
             x = 0
             for c in l:
-                if c == '0' or c == 'e':
+                if c in ('0', 'e', 's'):
                     x += 1
                     continue
                 dl.append((self.tiles[c],
