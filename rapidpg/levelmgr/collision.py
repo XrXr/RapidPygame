@@ -1,11 +1,14 @@
 #  Rapid Pygame
 #  https://github.com/XrXr/RapidPygame
 #  License: MIT
+import pygame
 from pygame.rect import Rect
+from pygame import Surface
 from os.path import join
 from rapidpg.loader.image import ImageLoader
 from .camera import Camera
 import math
+from ..utilities import parse_config
 
 
 class Level:
@@ -14,7 +17,7 @@ class Level:
     and level related collision detection. The structure of a level can be found in
     *level format.md*
     """
-    def __init__(self, config, data, tiles, background=None, player=None):
+    def __init__(self, config, data, tiles, backgrounds=None, player=None):
         """
         Contains the interpreted level and methods that should be called every frame
         to update the level. Also handle player movement. Since the interpreted level
@@ -23,8 +26,8 @@ class Level:
         :param player: The player object to manipulate
         :param config: The config dict of the level
         :param data: The uninterpreted, but parsed level
-        :param tiles: A dict of tile sets, mapping their name to a surface
-        :param background: A list of backgrounds, can be None
+        :param tiles: A dict of tile sets, mapping a name to a surface
+        :param backgrounds: A dict of backgrounds, mapping a name to a surface
 
         .. py:attribute:: interpreted
 
@@ -40,7 +43,6 @@ class Level:
         self.config = config
         self.data = data
         self.tiles = tiles
-        self.background = background
         for k in tiles:
             self.tile_width = tiles[k].get_rect().width
             break
@@ -50,10 +52,23 @@ class Level:
         self.camera = Camera(self.config['resolution'],
                              Rect((0, 0), (self.level_width, self.level_height)),
                              player.speed)
+
+        self.background = []
+        if backgrounds:
+            for name, speed in config['background']:
+                surf = backgrounds[name]
+                if speed:
+                    surf = self._construct_background(surf)
+                self.background.append([surf, surf.get_rect(), speed])
+
         self.interpreted, self.spawn, self.exits = self.interpret()
 
     def _get_draw_list(self):
         dl = []
+        # backgrounds
+        for surf, rect, _ in self.background:
+            dl.append((surf, (rect.x, self.camera.rect.height - rect.height)))
+        # landscape
         y = 0
         for l in self.data:
             x = 0
@@ -66,10 +81,31 @@ class Level:
                             y * self.tile_width - self.camera.rect.y)))
                 x += 1
             y += 1
-        dl.append((self.player.surf, self.player.rect.move(-self.camera.rect.x, -self.camera.rect.y)))
+        # player
+        dl.append((self.player.surf,
+                   self.player.rect.move(-self.camera.rect.x, -self.camera.rect.y)))
         return dl
 
     draw_list = property(_get_draw_list)
+
+    def _construct_background(self, surf):
+        goal = self.camera.rect.width * 3
+        width = 0
+        surf_width = surf.get_width()
+        while width < goal:
+            width += surf_width
+        constructed = Surface((width, surf.get_height()), pygame.SRCALPHA)
+        x = 0
+        while x < width - surf_width:
+            constructed.blit(surf, (x, 0))
+            x += surf_width
+        return constructed
+
+    def _bg_left(self):
+        pass
+
+    def _bg_right(self):
+        pass
 
     def update(self, movement):
         """
@@ -322,10 +358,11 @@ class LevelManager:
         with open(map_path, 'r') as level_file:
             as_list = level_file.read().split("\n")
         separator = as_list.index("")
-        config = LevelManager._parse_config(as_list[0:separator])
+        config = parse_config(as_list[0:separator])
         data = LevelManager._parse_level(as_list[separator + 1:])
         tiles = self.loader.load_all(path + ["tiles"])
-        self.levels.append(Level(config, data, tiles, player=self.player))
+        backgrounds = self.loader.load_all(path + ["backgrounds"], True)
+        self.levels.append(Level(config, data, tiles, player=self.player, backgrounds=backgrounds))
 
     def next_level(self):
         """
@@ -355,54 +392,8 @@ class LevelManager:
     """Current level object"""
 
     @staticmethod
-    def _parse_config(raw_config):
-        def collision_reader(s):
-            """
-            Config into a set of int.
-            The config must be in the format of e,e,e....
-            where e is either a single character, or a range that
-            looks like *start...end*
-            the range is inclusive
-            """
-            as_list = s.split(",")
-            as_list = [x.strip() for x in as_list]
-            result = set()
-            for e in as_list:
-                if "..." in e:
-                    start, _, end = e.partition("...")
-                    for c in range(int(start), int(end) + 1):
-                        result.add(str(c))
-                else:
-                    result.add(e)
-            return result
-
-        def extract_float(s):
-            return float(s.strip())
-
-        def parse_resolution(s):
-            w, _, h = s.partition(" ")
-            return int(w), int(h)
-
-        processors = {"collision": collision_reader,
-                      "gravity": extract_float, "resolution": parse_resolution}
-        config = dict()
-        # populate dict
-        for l in raw_config:
-            name, _, value = l.partition(" ")
-            config[name] = value
-        # process everything
-        for n, v in config.items():
-            if n in processors:
-                config[n] = processors[n](v)
-        return config
-
-    @staticmethod
     def _parse_level(raw_level):
         level = []
         for l in raw_level:
             level.append([x for x in l.strip()])
         return level
-
-if __name__ == "__main__":
-    print(LevelManager._parse_config(["collision 1...7, 10, 12, 20...30"]))
-    print(LevelManager._parse_config(["collision 1...7,10,12,20...30"]))
