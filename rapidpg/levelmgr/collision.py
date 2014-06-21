@@ -15,7 +15,7 @@ class Level:
     """
     Responsible for handling player movement
     and level related collision detection. The structure of a level can be found in
-    *level format.md*
+    :doc:`level_format`
     """
     def __init__(self, config, data, tiles, backgrounds=None, player=None):
         """
