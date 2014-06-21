@@ -11,6 +11,25 @@ class Camera:
     def __init__(self, screen_res, level_rect, x_speed=15, y_speed=15,
                  left_threshold=10, right_threshold=75, up_threshold=10,
                  down_threshold=75):
+        """
+
+        :param screen_res: A tuple of int. (w, h)
+        :param level_rect: A rectangle that covers all of the level
+        :param x_speed: The horizontal speed of the camera
+        :param y_speed: The vertical speed of the camera
+        :param left_threshold:
+            The percentage of screen to reach in order for the camera to scroll
+            left
+        :param right_threshold:
+            The percentage of screen to reach in order for the camera to scroll
+            right
+        :param up_threshold:
+            The percentage of screen to reach in order for the camera to scroll
+            up
+        :param down_threshold:
+            The percentage of screen to reach in order for the camera to scroll
+            down
+        """
         self.level_rect = level_rect
         self.horizontal_speed = x_speed
         self.vertical_speed = y_speed

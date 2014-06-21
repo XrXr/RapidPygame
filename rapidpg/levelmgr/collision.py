@@ -115,7 +115,6 @@ class Level:
                 rect.x = -rect.width / 2
             rect.move_ip(speed, 0)
 
-
     def update(self, movement):
         """
         This method should be called every frame to update the location of
