@@ -51,5 +51,8 @@ class Player():
     def jump_progress(self, landed=False):
         if landed:
             self.jumping = False
-
+    """
+    Note that if this attribute is accessed in multiple places, it will accelerate
+    the animation.
+    """
     surf = property(_get_surf)
