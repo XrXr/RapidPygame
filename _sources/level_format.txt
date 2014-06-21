@@ -9,13 +9,17 @@ For collision based levels, the structure will look like: ::
         2.png
         3.png
         ...
+    backgrounds/
+        background1.jpg
+        background2.jpg
+        background3.jpg
+        background4.jpg
     map
-    background
 
 
 The simplest level must have the map file and one image file under the tiles folder.
 
-Tiles images must be square and have consistent file extension.
+Tiles images must be square and have consistent file extension. Background images must also have consistent file extension.
 
 Format of *map*
 ---------------
@@ -33,6 +37,9 @@ Here is the list of config names and their description:
   Each entry must be a single character or a range take looks like *"start...end"* where start start and end are both
   between 1 and 10 (inclusive)
 * *gravity*: Downward acceleration of the player, in :math:`pixels/frame^2`
+* *background* Format of ``filename speed`` filename will match a file in the backgrounds folder, and the speed controls
+  how fast the background moves. Multiple lines of this config can be specified, the backgrounds laid out in the order of
+  the lines.
 
 the simplest *map* file must contain a *collision* config
 

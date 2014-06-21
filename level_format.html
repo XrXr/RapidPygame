@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Level format &mdash; Rapid Pygame 0.1 documentation</title>
+    <title>Level format &mdash; Rapid Pygame 0.2 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Rapid Pygame 0.1 documentation" href="index.html" />
+    <link rel="top" title="Rapid Pygame 0.2 documentation" href="index.html" />
     <link rel="prev" title="Player class" href="player.html" /> 
   </head>
   <body>
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="player.html" title="Player class"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -58,12 +58,16 @@ For collision based levels, the structure will look like:</p>
     2.png
     3.png
     ...
+backgrounds/
+    background1.jpg
+    background2.jpg
+    background3.jpg
+    background4.jpg
 map
-background
 </pre></div>
 </div>
 <p>The simplest level must have the map file and one image file under the tiles folder.</p>
-<p>Tiles images must be square and have consistent file extension.</p>
+<p>Tiles images must be square and have consistent file extension. Background images must also have consistent file extension.</p>
 <div class="section" id="format-of-map">
 <h2>Format of <em>map</em><a class="headerlink" href="#format-of-map" title="Permalink to this headline">¶</a></h2>
 <p>A <em>map</em> file represents the landscape of the level and some of its property. It is consist of two
@@ -77,6 +81,9 @@ parts, a config portion and a data portion. The two is separated by an empty lin
 Each entry must be a single character or a range take looks like <em>&#8220;start...end&#8221;</em> where start start and end are both
 between 1 and 10 (inclusive)</li>
 <li><em>gravity</em>: Downward acceleration of the player, in <span class="math">\(pixels/frame^2\)</span></li>
+<li><em>background</em> Format of <tt class="docutils literal"><span class="pre">filename</span> <span class="pre">speed</span></tt> filename will match a file in the backgrounds folder, and the speed controls
+how fast the background moves. Multiple lines of this config can be specified, the backgrounds laid out in the order of
+the lines.</li>
 </ul>
 <p>the simplest <em>map</em> file must contain a <em>collision</em> config</p>
 <p>The data portion of <em>map</em> are characters that each represent a tile in the level landscape. Their
@@ -136,7 +143,7 @@ value match the names of files under the <em>tiles</em> folder. <em>e</em> is us
         <li class="right" >
           <a href="player.html" title="Player class"
              >previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

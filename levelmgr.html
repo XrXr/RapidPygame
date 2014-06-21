@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Level managers &mdash; Rapid Pygame 0.1 documentation</title>
+    <title>Level managers &mdash; Rapid Pygame 0.2 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1',
+        VERSION:     '0.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Rapid Pygame 0.1 documentation" href="index.html" />
+    <link rel="top" title="Rapid Pygame 0.2 documentation" href="index.html" />
     <link rel="next" title="Image loader" href="loader.html" />
     <link rel="prev" title="Introduction" href="index.html" /> 
   </head>
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="index.html" title="Introduction"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -58,10 +58,10 @@
 <p>Rapid Pygame provides a level manager that keeps tract of level and is capable of level parsing</p>
 <span class="target" id="module-rapidpg.levelmgr.collision"></span><dl class="class">
 <dt id="rapidpg.levelmgr.collision.Level">
-<em class="property">class </em><tt class="descclassname">rapidpg.levelmgr.collision.</tt><tt class="descname">Level</tt><big>(</big><em>config</em>, <em>data</em>, <em>tiles</em>, <em>background=None</em>, <em>player=None</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">rapidpg.levelmgr.collision.</tt><tt class="descname">Level</tt><big>(</big><em>config</em>, <em>data</em>, <em>tiles</em>, <em>backgrounds=None</em>, <em>player=None</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Responsible for handling player movement
 and level related collision detection. The structure of a level can be found in
-<em>level format.md</em></p>
+<a class="reference internal" href="level_format.html"><em>Level format</em></a></p>
 <p>Contains the interpreted level and methods that should be called every frame
 to update the level. Also handle player movement. Since the interpreted level
 is exposed, the built in movement method doesn&#8217;t have to be used.</p>
@@ -73,8 +73,8 @@ is exposed, the built in movement method doesn&#8217;t have to be used.</p>
 <li><strong>player</strong> &#8211; The player object to manipulate</li>
 <li><strong>config</strong> &#8211; The config dict of the level</li>
 <li><strong>data</strong> &#8211; The uninterpreted, but parsed level</li>
-<li><strong>tiles</strong> &#8211; A dict of tile sets, mapping their name to a surface</li>
-<li><strong>background</strong> &#8211; A list of backgrounds, can be None</li>
+<li><strong>tiles</strong> &#8211; A dict of tile sets, mapping a name to a surface</li>
+<li><strong>backgrounds</strong> &#8211; A dict of backgrounds, mapping a name to a surface</li>
 </ul>
 </td>
 </tr>
@@ -90,8 +90,13 @@ is exposed, the built in movement method doesn&#8217;t have to be used.</p>
 <dt id="rapidpg.levelmgr.collision.Level.draw_list">
 <tt class="descname">draw_list</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.draw_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of tuple of surfaces and rect. Drawing them with <em>Suface.blit</em>
-will show the level</p>
+will show the level and the player</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">draw_list</tt></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="rapidpg.levelmgr.collision.Level.fill_bottom">
@@ -265,7 +270,7 @@ the player and the environment</p>
         <li class="right" >
           <a href="index.html" title="Introduction"
              >previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
