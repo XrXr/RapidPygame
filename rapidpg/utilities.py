@@ -54,6 +54,19 @@ def parse_config(raw_config):
                 processed_config[n] = processors[n](v)
     return processed_config
 
+
+def set_alpha(surface, alpha):
+    """
+    Takes a surface with per-pixel transparency, then return a new one with
+    a new alpha level. Setting a alpha higher than the original will not work.
+    :param surface: original surface
+    :param alpha: new alpha level
+    :return: surface
+    """
+    new = surface.copy()
+    new.fill((255, 255, 255, alpha), None, pygame.BLEND_RGBA_MIN)
+    return new
+
 if __name__ == "__main__":
     print(parse_config(["collision 1...7, 10, 12, 20...30"]))
     print(parse_config(["collision 1...7,10,12,20...30"]))
