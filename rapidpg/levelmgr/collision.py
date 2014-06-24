@@ -354,6 +354,7 @@ class LevelManager:
     def __call__(self):
         """
         A shortcut for level_manager.current_level
+        :rtype: Level
         """
         return self._get_current_level()
 
@@ -398,8 +399,8 @@ class LevelManager:
         """
         return self.levels[self._current_level]
 
-    current_level = property(_get_current_level)
     """Current level object"""
+    current_level = property(_get_current_level)
 
     @staticmethod
     def _parse_level(raw_level):
