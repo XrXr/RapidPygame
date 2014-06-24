@@ -32,7 +32,7 @@ class ImageLoader:
             return load(self.get_path(path)).convert_alpha()
         return load(self.get_path(path)).convert()
 
-    def load_all(self, path, convert_alpha=False):
+    def load_all(self, path, convert_alpha=False, no_convert=False):
         """
         Load all files in a directory. Assume they are all images.
 
@@ -48,6 +48,9 @@ class ImageLoader:
                 striped = splitext(name)[0]
                 if convert_alpha:
                     result[striped] = load(file_path).convert_alpha()
+                    continue
+                if no_convert:
+                    result[striped] = load(file_path)
                     continue
                 result[striped] = load(file_path).convert()
         return result
