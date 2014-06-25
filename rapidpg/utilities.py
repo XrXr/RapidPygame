@@ -29,7 +29,7 @@ def parse_config(raw_config):
     def extract_float(s):
         return float(s.strip())
 
-    def parse_resolution(s):
+    def parse_two_int(s):
         w, _, h = s.strip().partition(" ")
         return int(w), int(h)
 
@@ -37,9 +37,16 @@ def parse_config(raw_config):
         n, _, speed = s.strip().partition(" ")
         return [(n, int(speed))]
 
+    def parse_exit(s):
+        l = s.strip().split(" ")
+        return l[0], l[1], l[2], l[3]
+
     processors = {"collision": collision_reader, "gravity": extract_float,
-                  "resolution": parse_resolution,
-                  "background": parse_background}
+                  "resolution": parse_two_int,
+                  "background": parse_background,
+                  "exit": parse_exit,
+                  "spawn": parse_two_int}
+    # read the raw lines
     config = []
     for l in raw_config:
         name, _, value = l.partition(" ")

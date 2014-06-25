@@ -12,6 +12,7 @@ current_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.split(current_path)[0])
 import argparse
 from rapidpg import ImageLoader
+from rapidpg.utilities import parse_config
 import pygame
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import ParseError
@@ -38,34 +39,66 @@ try:
     tree = ET.parse(args.file)
     lvl = tree.find("layer/data").text.strip() + ","
     lvl = [x for x in lvl.split("\n")]
-    # there can only be 62 different tiles in a given map. Should be enough
-    characters = set()
     result = ""
+    # there can only be 61 different tiles in a given map. Should be enough
+    characters = set()
+    max_tile = 0
     for l in lvl:
-        for c in l[:-1].split(","):
+        for c in l.strip()[:-1].split(","):
+            as_int = int(c)
             final_c = c
-            if int(c) > 9:
-                final_c = ascii_letters[int(c) - 10]
+            if as_int > 9:
+                final_c = ascii_letters[as_int - 10]
+            if as_int > max_tile:
+                max_tile = as_int
             result += final_c
             characters.add(final_c)
         result += "\n"
-    # mark all tiles as collidable
-    result = "collision " + ",".join(characters) + "\n\n" + result
     # take out the new line at the end
     result = result[:-1]
+
+    header = ""
+    has_collision = False
+    for e in tree.findall("properties/property"):
+        header += "{0} {1}\n".format(e.get("name"), e.get("value"))
+        if e.get("name") == "collision":
+            has_collision = True
+    spawn_node = tree.find("objectgroup/object[@type='spawn']")
+    if spawn_node is not None:
+        header += "spawn {0} {1}\n".format(spawn_node.get("x"),
+                                           spawn_node.get("y"))
+    exit_node = tree.find("objectgroup/object[@type='exit']")
+    if exit_node is not None:
+        header += "exit {0} {1} {2} {3}\n".format(exit_node.get("x"),
+                                                   exit_node.get("y"),
+                                                   exit_node.get("width"),
+                                                   exit_node.get("height"))
+    for e in tree.findall("imagelayer"):
+        header += "background {0}\n".format(e.get("name"))
+    # enable collision for all tiles by default
+    if not has_collision and max_tile > 0:
+        cl = "1"
+        if max_tile > 1:
+            cl = "1..." + str(min(10, max_tile))
+        # if max_tile is less than 10, nothing will happen
+        for i in range(10, max_tile + 1):
+            cl += "," + ascii_letters[i - 10]
+    result = header + "\n" + result
     file_name = basename(args.file).split(".")[0]
     if args.output:
         file_name = args.output
-    with open(file_name, "a") as f:
+    with open(file_name, "w") as f:
         f.write(result)
     print('Conversion finished, wrote to "{0}"'.format(file_name))
     raise SystemExit
 except ParseError:
     # Rapid Pygame to Tiled
+    # these configs are reflected in the map, not as properties
+    EXCLUDED_CONFIG = ["background", "exit", "spawn"]
     loader = ImageLoader(os.path.dirname(os.path.abspath(args.file)))
     pygame.display.init()
     try:
-        tiles = loader.load_all(["tiles"], no_convert=True)
+        tiles = loader.load_all(["tiles"], raw=True)
     except FileNotFoundError:
         print("CONVERSION FAILED:", 'Tile images not found in "tiles" folder where the map file is located')
         raise SystemExit
@@ -86,19 +119,17 @@ except ParseError:
     if args.output:
         file_name = args.output
     pygame.image.save(tile_set_surf, file_name + ".png")
+
     # parse level
     with open(args.file, "r") as level_file:
         as_list = level_file.read().split("\n")
     separator = as_list.index("")
+    raw_config = as_list[:separator]
     data = as_list[separator + 1:]
     level = []
     for l in data:
         level.append([x if x.isdecimal() else str(ascii_letters.find(x) + 10)
                      for x in l.strip()])
-    result = ""
-    for l in level:
-        result += ",".join(l) + ","
-    result = result[:-1]
     # build Tiled XML
     level_width = str(len(level[0]))
     level_height = str(len(level))
@@ -109,6 +140,23 @@ except ParseError:
     root.set("height", str(level_height))
     root.set("tilewidth", str(tile_width))
     root.set("tileheight", str(tile_width))
+    # save the original config of the level into the Tiled map
+    properties = ET.SubElement(root, "properties")
+    background_config = []
+    for l in raw_config:
+        name, value = l.split(" ", 1)
+        if name not in EXCLUDED_CONFIG:
+            ET.SubElement(properties, "property", name=name, value=value)
+            continue
+        if name == "background":
+            background_config.append(l)
+    for l in background_config:
+        _, value = l.split(" ", 1)
+        ET.SubElement(root, "imagelayer", {
+            "name": value,
+            "width": level_width,
+            "height": level_height
+        })
     tile_set = ET.SubElement(root, "tileset", {
         "firstgid": "1",
         "name": file_name,
@@ -125,7 +173,33 @@ except ParseError:
         "width": str(level_width),
         "height": str(level_height)
     })
-    ET.SubElement(layer, "data", encoding="csv").text = result
+
+    csv = ""
+    for l in level:
+        csv += ",".join(l) + ",\n"
+    csv = csv[:-2]
+
+    ET.SubElement(layer, "data", encoding="csv").text = csv
+    config = parse_config(raw_config)
+    if "exit" in config or "spawn" in config:
+        control_layer = ET.SubElement(root, "objectgroup", name="Controls",
+                                      width=level_width, height=level_height)
+        if "exit" in config:
+            x, y, w, h = config["exit"]
+            ET.SubElement(control_layer, "object", {
+                "type": "exit",
+                "x": x,
+                "y": y,
+                "width": w,
+                "height": h
+            })
+        if "spawn" in config:
+            x, y = config["spawn"]
+            ET.SubElement(control_layer, "object", {
+                "type": "spawn",
+                "x": x,
+                "y": y
+            })
     ET.ElementTree(root).write(file_name + ".tmx", encoding="UTF-8",
                                xml_declaration=True)
     print('Conversion finished, wrote to "{0}" and "{1}"'.format(file_name + ".png", file_name + ".tmx"))
