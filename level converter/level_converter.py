@@ -79,7 +79,7 @@ try:
     if not has_collision and max_tile > 0:
         cl = "1"
         if max_tile > 1:
-            cl = "1..." + str(min(10, max_tile))
+            cl = "1..." + str(min(9, max_tile))
         # if max_tile is less than 10, nothing will happen
         for i in range(10, max_tile + 1):
             cl += "," + ascii_letters[i - 10]

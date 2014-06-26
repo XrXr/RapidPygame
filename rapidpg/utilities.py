@@ -8,7 +8,6 @@ import pygame
 def parse_config(raw_config):
     def collision_reader(s):
         """
-        Config into a set of int.
         The config must be in the format of e,e,e....
         where e is either a single character, or a range that
         looks like *start...end*
@@ -29,27 +28,28 @@ def parse_config(raw_config):
     def extract_float(s):
         return float(s.strip())
 
-    def parse_two_int(s):
-        w, _, h = s.strip().partition(" ")
-        return int(w), int(h)
+    def parse_int(how_many):
+        """
+        Factory function for int parsers
+        """
+        def parser(s):
+            l = list(map(int, s.split(" ")))
+            return tuple(l[:how_many + 1])
+        return parser
 
     def parse_background(s):
         n, _, speed = s.strip().partition(" ")
         return [(n, int(speed))]
 
-    def parse_exit(s):
-        l = s.strip().split(" ")
-        return l[0], l[1], l[2], l[3]
-
     processors = {"collision": collision_reader, "gravity": extract_float,
-                  "resolution": parse_two_int,
+                  "resolution": parse_int(2),
                   "background": parse_background,
-                  "exit": parse_exit,
-                  "spawn": parse_two_int}
+                  "exit": parse_int(4),
+                  "spawn": parse_int(2)}
     # read the raw lines
     config = []
-    for l in raw_config:
-        name, _, value = l.partition(" ")
+    for config_line in raw_config:
+        name, _, value = config_line.partition(" ")
         config.append((name, value))
     # process everything
     processed_config = dict()
@@ -78,3 +78,4 @@ if __name__ == "__main__":
     print(parse_config(["collision 1...7, 10, 12, 20...30"]))
     print(parse_config(["collision 1...7,10,12,20...30"]))
     print(parse_config(["background static 0", "background trees 15", "background mountains 5"]))
+    print(parse_config(["exit 10 10 10 10", "resolution 800 600", "spawn 10 20"]))

@@ -28,15 +28,6 @@ class Level:
         :param data: The uninterpreted, but parsed level
         :param tiles: A dict of tile sets, mapping a name to a surface
         :param backgrounds: A dict of backgrounds, mapping a name to a surface
-
-        .. py:attribute:: interpreted
-
-            A list of rect representing the landscape of the level
-
-        .. py:attribute:: draw_list
-
-            A list of tuple of surfaces and rect. Drawing them with *Suface.blit*
-            will show the level and the player
         """
 
         self.player = player
@@ -61,7 +52,15 @@ class Level:
                     surf = self._construct_background(surf)
                 self.backgrounds.append([surf, surf.get_rect(), speed])
 
-        self.interpreted, self.spawn, self.exits = self.interpret()
+        self.interpreted = self.interpret()
+        #: Spawn point of the player
+        self.spawn = 0, 0
+        # : Exit of the level
+        self.exit = None
+        if 'spawn' in config:
+            self.spawn = config['spawn']
+        if 'exit' in config:
+            self.exit = Rect(*config['exit'])
         self.player.rect.x, self.player.rect.y = self.spawn
         self.camera.snap_to(self.player.rect)
 
@@ -191,36 +190,6 @@ class Level:
         self.camera.update(self.player.rect)
         return m
 
-    def fill_bottom(self):
-        """
-        .. warning::
-            *Broken*
-
-        Return a list of rects that fills all the space
-        below the interpreted level
-        """
-        rect_list = []
-        for l in range(len(self.data)):
-            for c in range(len(self.data[l])):
-                if self.data[l][c] is None:
-                    height = 0
-                    tmp_l = l
-                    while True:
-                        tmp_l += 1
-                        try:
-                            if self.data[tmp_l][c] == 'FILLED':
-                                continue
-                            else:
-                                rect_list.append(
-                                    Rect(c * self.tile_width, tmp_l
-                                         * self.tile_width,
-                                         self.tile_width,
-                                         height * self.tile_width))
-                                self.data[tmp_l][c] = 'FILLED'
-                        except IndexError:
-                            break
-        return rect_list
-
     def get_dimensions(self):
         """
         Get the width and height of the level
@@ -236,8 +205,6 @@ class Level:
 
         :return: Three tuple that looks like (rect_list, spawn, exits)
         """
-        exit_char = 'e'
-        spawn_char = 's'
         rect_list = []
         raw = self.data
         tile_width = self.tile_width
@@ -249,14 +216,12 @@ class Level:
                       Rect(0, -100, level_width, 100),
                       Rect(0, level_height, level_width, 100),
                       Rect(level_width, 0, 100, level_height)]
-        spawn = None
-        exits = []
         for line in range(len(raw)):
             for char in range(len(raw[line])):
                 #  +1 to line since the rect directly under a process
                 #  rect would collide
-                if Level._processed(char * self.tile_width,
-                                    (line + 1) * self.tile_width, rect_list):
+                if Level._is_processed(char * self.tile_width,
+                                      (line + 1) * self.tile_width, rect_list):
                     continue
                 if raw[line][char] in collide_set:
                     tmp_char = char
@@ -265,24 +230,22 @@ class Level:
                         lowest = float("inf")
                         while True:
                             try:
-                                if raw[line][tmp_char] in collide_set:
-                                    width += 1
-                                    possible_height = 1
-                                    tmp_line = line
-                                    while True:  # go down
-                                        try:
-                                            tmp_line += 1
-                                            if raw[tmp_line][tmp_char] in \
-                                                    collide_set:
-                                                possible_height += 1
-                                            else:
-                                                break
-                                        except IndexError:
-                                            break
-                                    if possible_height < lowest:
-                                        lowest = possible_height
-                                else:
+                                if raw[line][tmp_char] not in collide_set:
                                     break
+                                width += 1
+                                possible_height = 1
+                                tmp_line = line
+                                while True:  # go down
+                                    try:
+                                        tmp_line += 1
+                                        if raw[tmp_line][tmp_char] not in \
+                                                collide_set:
+                                            break
+                                        possible_height += 1
+                                    except IndexError:
+                                        break
+                                if possible_height < lowest:
+                                    lowest = possible_height
                                 tmp_char += 1
                             except IndexError:
                                 break
@@ -293,15 +256,10 @@ class Level:
                         Rect(char * tile_width, line * tile_width,
                              width * tile_width,
                              height * tile_width))
-                elif raw[line][char] == spawn_char:
-                    spawn = (char * tile_width, line * tile_width)
-                elif raw[line][char] == exit_char:
-                    exits.append(Rect(char * tile_width, 0
-                                      ,tile_width, level_height))
-        return rect_list, spawn, exits
+        return rect_list
 
     @staticmethod
-    def _processed(x, y, rect_list):
+    def _is_processed(x, y, rect_list):
         for rect in rect_list:
             if rect.x <= x <= rect.x + rect.width and \
                rect.y <= y <= rect.y + rect.height:
@@ -399,7 +357,7 @@ class LevelManager:
         """
         return self.levels[self._current_level]
 
-    """Current level object"""
+    #: Current level object, set by using :func:`next_level` and :func:`previous_level`
     current_level = property(_get_current_level)
 
     @staticmethod
