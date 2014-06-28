@@ -186,17 +186,17 @@ def convert():
                 x, y, w, h = config["exit"]
                 ET.SubElement(control_layer, "object", {
                     "type": "exit",
-                    "x": x,
-                    "y": y,
-                    "width": w,
-                    "height": h
+                    "x": str(x),
+                    "y": str(y),
+                    "width": str(w),
+                    "height": str(h)
                 })
             if "spawn" in config:
                 x, y = config["spawn"]
                 ET.SubElement(control_layer, "object", {
                     "type": "spawn",
-                    "x": x,
-                    "y": y
+                    "x": str(x),
+                    "y": str(y)
                 })
         ET.ElementTree(root).write(file_name + ".tmx", encoding="UTF-8",
                                    xml_declaration=True)

@@ -51,11 +51,11 @@ class Level:
                 if speed:
                     surf = self._construct_background(surf)
                 self.backgrounds.append([surf, surf.get_rect(), speed])
-
+        #: A list of rects that should collide with the player, see :func:`interpret`
         self.interpreted = self.interpret()
-        #: Spawn point of the player
+        #: Spawn point of the player ``(x, y)``
         self.spawn = 0, 0
-        # : Exit of the level
+        #: Exit of the level. ``(x, y)`` None if unspecified in the level
         self.exit = None
         if 'spawn' in config:
             self.spawn = config['spawn']
@@ -86,7 +86,9 @@ class Level:
         dl.append((self.player.surf,
                    self.player.rect.move(-self.camera.rect.x, -self.camera.rect.y)))
         return dl
-
+    #: A list of 2 tuples, that are ``(surface, rect)`` drawing the whole list
+    #: with ``display_surf.blit(*level.draw_list)`` will draw
+    #: the background, level, and player
     draw_list = property(_get_draw_list)
 
     def _construct_background(self, surf):
@@ -201,9 +203,13 @@ class Level:
 
     def interpret(self):
         """
-        Interpret a level.
+        Interpret the level, breaking it down into a list of rect
+        that should collide with the player. Whether a tile collides
+        with the player or not is specified in the level file. See
+        :doc:`level_format` for more details
 
-        :return: Three tuple that looks like (rect_list, spawn, exits)
+        :return: A list of rects
+        :rtype: [Rect]
         """
         rect_list = []
         raw = self.data

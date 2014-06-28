@@ -51,8 +51,7 @@ class Player():
     def jump_progress(self, landed=False):
         if landed:
             self.jumping = False
-    """
-    Note that if this attribute is accessed in multiple places, it will accelerate
-    the animation.
-    """
+
+    #: The player's current surface. Note that every time this
+    #: attribute is accessed, next frame in the animation is brought closer
     surf = property(_get_surf)

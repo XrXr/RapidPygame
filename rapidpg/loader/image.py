@@ -14,7 +14,7 @@ class ImageLoader:
         """
         Create a loader pointing at the *origin*. Any loading is relative to the *origin*
         Paths passed to the methods of this object are lists where each element is either
-        a directory name or a file name. ([dir1,dir2,file.txt])
+        a directory name or a file name. ``([dir1,dir2,file.txt])``
 
         :param origin: path string
         """
