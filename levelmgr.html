@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Level managers &mdash; Rapid Pygame 0.2 documentation</title>
+    <title>Level managers &mdash; Rapid Pygame 0.3 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2',
+        VERSION:     '0.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Rapid Pygame 0.2 documentation" href="index.html" />
+    <link rel="top" title="Rapid Pygame 0.3 documentation" href="index.html" />
     <link rel="next" title="Image loader" href="loader.html" />
     <link rel="prev" title="Introduction" href="index.html" /> 
   </head>
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="index.html" title="Introduction"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -80,35 +80,6 @@ is exposed, the built in movement method doesn&#8217;t have to be used.</p>
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="rapidpg.levelmgr.collision.Level.interpreted">
-<tt class="descname">interpreted</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.interpreted" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of rect representing the landscape of the level</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="rapidpg.levelmgr.collision.Level.draw_list">
-<tt class="descname">draw_list</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.draw_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of tuple of surfaces and rect. Drawing them with <em>Suface.blit</em>
-will show the level and the player</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt>
-<tt class="descname">draw_list</tt></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="rapidpg.levelmgr.collision.Level.fill_bottom">
-<tt class="descname">fill_bottom</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.fill_bottom" title="Permalink to this definition">¶</a></dt>
-<dd><div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last"><em>Broken</em></p>
-</div>
-<p>Return a list of rects that fills all the space
-below the interpreted level</p>
-</dd></dl>
-
 <dl class="staticmethod">
 <dt id="rapidpg.levelmgr.collision.Level.find_max">
 <em class="property">static </em><tt class="descname">find_max</tt><big>(</big><em>rect_list</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.find_max" title="Permalink to this definition">¶</a></dt>
@@ -138,12 +109,17 @@ below the interpreted level</p>
 <dl class="method">
 <dt id="rapidpg.levelmgr.collision.Level.interpret">
 <tt class="descname">interpret</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.interpret" title="Permalink to this definition">¶</a></dt>
-<dd><p>Interpret a level.</p>
+<dd><p>Interpret the level, breaking it down into a list of rect
+that should collide with the player. Whether a tile collides
+with the player or not is specified in the level file. See
+<a class="reference internal" href="level_format.html"><em>Level format</em></a> for more details</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Three tuple that looks like (rect_list, spawn, exits)</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of rects</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">[Rect]</td>
 </tr>
 </tbody>
 </table>
@@ -162,6 +138,32 @@ the player and the environment</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rapidpg.levelmgr.collision.Level.draw_list">
+<tt class="descname">draw_list</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.draw_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of 2 tuples, that are <tt class="docutils literal"><span class="pre">(surface,</span> <span class="pre">rect)</span></tt> drawing the whole list
+with <tt class="docutils literal"><span class="pre">display_surf.blit(*level.draw_list)</span></tt> will draw
+the background, level, and player</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rapidpg.levelmgr.collision.Level.exit">
+<tt class="descname">exit</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.exit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exit of the level. <tt class="docutils literal"><span class="pre">(x,</span> <span class="pre">y)</span></tt> None if unspecified in the level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rapidpg.levelmgr.collision.Level.interpreted">
+<tt class="descname">interpreted</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.interpreted" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of rects that should collide with the player, see <a class="reference internal" href="#rapidpg.levelmgr.collision.Level.interpret" title="rapidpg.levelmgr.collision.Level.interpret"><tt class="xref py py-func docutils literal"><span class="pre">interpret()</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rapidpg.levelmgr.collision.Level.spawn">
+<tt class="descname">spawn</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.spawn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawn point of the player <tt class="docutils literal"><span class="pre">(x,</span> <span class="pre">y)</span></tt></p>
 </dd></dl>
 
 </dd></dl>
@@ -183,12 +185,6 @@ the player and the environment</p>
 </tr>
 </tbody>
 </table>
-<dl class="attribute">
-<dt id="rapidpg.levelmgr.collision.LevelManager.current_level">
-<tt class="descname">current_level</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.LevelManager.current_level" title="Permalink to this definition">¶</a></dt>
-<dd><p>Current level object</p>
-</dd></dl>
-
 <dl class="method">
 <dt id="rapidpg.levelmgr.collision.LevelManager.load_level">
 <tt class="descname">load_level</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.LevelManager.load_level" title="Permalink to this definition">¶</a></dt>
@@ -215,6 +211,12 @@ the player and the environment</p>
 <dt id="rapidpg.levelmgr.collision.LevelManager.previous_level">
 <tt class="descname">previous_level</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.LevelManager.previous_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set current_level to the previous level</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="rapidpg.levelmgr.collision.LevelManager.current_level">
+<tt class="descname">current_level</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.LevelManager.current_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current level object, set by using <a class="reference internal" href="#rapidpg.levelmgr.collision.LevelManager.next_level" title="rapidpg.levelmgr.collision.LevelManager.next_level"><tt class="xref py py-func docutils literal"><span class="pre">next_level()</span></tt></a> and <a class="reference internal" href="#rapidpg.levelmgr.collision.LevelManager.previous_level" title="rapidpg.levelmgr.collision.LevelManager.previous_level"><tt class="xref py py-func docutils literal"><span class="pre">previous_level()</span></tt></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -270,7 +272,7 @@ the player and the environment</p>
         <li class="right" >
           <a href="index.html" title="Introduction"
              >previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

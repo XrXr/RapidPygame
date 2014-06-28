@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Working with level file &mdash; Rapid Pygame 0.3 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Rapid Pygame 0.3 documentation" href="index.html" />
+    <link rel="prev" title="Level format" href="level_format.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="level_format.html" title="Level format"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="working-with-level-file">
+<h1>Working with level file<a class="headerlink" href="#working-with-level-file" title="Permalink to this headline">¶</a></h1>
+<p>The map file used for the <a class="reference internal" href="levelmgr.html"><em>collision level manager</em></a> in Rapid Pygame is a very simple tile map. While the format
+is easy to understand, it is not easy for editing in a text editor. To make designing level easy and fast, Rapid Pygame provides
+an utility that converts to and from native <em>.tmx</em> <a class="reference external" href="http://www.mapeditor.org/">Tiled</a> map file. Since <a class="reference external" href="http://www.mapeditor.org/">Tiled</a> is well established and easy to use, using it
+for level editing should be painless and effective.</p>
+<div class="section" id="using-the-converter">
+<h2>Using the converter<a class="headerlink" href="#using-the-converter" title="Permalink to this headline">¶</a></h2>
+<p>The converter can be executed using <tt class="docutils literal"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">rapidpg</span> <span class="pre">*file*</span></tt> <em>file</em> is required and points to either a Tiled map file(.tmx)
+or a Rapid Pygame <a class="reference internal" href="level_format.html#map"><em>Format of map</em></a> file. The data encoding of the Tiled file must be <em>CSV</em>. When converting from Rapid Pygame to
+Tiled, the Rapid Pygame map must also have its tile images in the <em>tiles</em> folder in the same directory</p>
+<p>There are extra options outlined in <tt class="docutils literal"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">rapidpg</span> <span class="pre">-h</span></tt></p>
+</div>
+<div class="section" id="formatting-of-tiled-map-file">
+<h2>Formatting of Tiled map file<a class="headerlink" href="#formatting-of-tiled-map-file" title="Permalink to this headline">¶</a></h2>
+<p>While all Tiled map file with <em>CSV</em> data encoding will convert successfully into a <a class="reference internal" href="level_format.html#map"><em>map</em></a> file, the level might not be
+handled correctly by the <a class="reference internal" href="levelmgr.html"><em>collision level manager</em></a>. The layers in the Tiled file must be structured as follows.
+Order is important.</p>
+<p>For clarity, each item is formatted as <tt class="docutils literal"><span class="pre">&lt;layer</span> <span class="pre">name&gt;</span> <span class="pre">&lt;layer</span> <span class="pre">type&gt;</span> <span class="pre">&lt;description&gt;</span></tt></p>
+<ul>
+<li><p class="first">Control <em>Object</em></p>
+<blockquote>
+<div><p>This layer is optional and can have a up to 2 unique objects, the objects must be rectangles and with type <em>exit</em> or <em>spawn</em>.
+Their location and/or size will be converted into the <em>exit</em> and <em>spawn</em> config field of the Rapid Pygame <a class="reference internal" href="level_format.html#map"><em>map</em></a></p>
+</div></blockquote>
+</li>
+<li><p class="first">map <em>Tile</em></p>
+<blockquote>
+<div><p>The landscape of the level. If more than 9 tile images are used, the converter assumes the name of the tile images are
+alphabet letters. The 10th tile is converted into <tt class="docutils literal"><span class="pre">a</span></tt> and continues following alphabetical order. When lower case letters
+run out, upper case is used. The maximum number of unique tile images is 61</p>
+</div></blockquote>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">&lt;background</span> <span class="pre">name&gt;</span> <span class="pre">&lt;speed&gt;</span></tt> <em>Image</em></p>
+<blockquote>
+<div><p>A background layer, multiple of these can exist for making parallax effect. The name is in the exact format of the
+<a class="reference internal" href="level_format.html#background"><em>background</em></a> config field. The order they will be rendered is bottom to top.</p>
+</div></blockquote>
+</li>
+</ul>
+<p>Extra config fields can be specified by editing <em>map properties</em>. (<em class="menuselection">Map ‣ Map properties...</em>)
+Layers that reflect a config field such as the <tt class="docutils literal"><span class="pre">Control</span></tt> layer are prioritized over these fields when there is a conflict.
+When the <tt class="docutils literal"><span class="pre">Collision</span></tt> field is unspecified, all tiles are marked as collidable</p>
+</div>
+<div class="section" id="accuracy-of-conversion">
+<h2>Accuracy of conversion<a class="headerlink" href="#accuracy-of-conversion" title="Permalink to this headline">¶</a></h2>
+<p>If a well-formed map is converted to the other format and back, the level should remain the same; the files before and after might
+not be identical, as the order of the config fields might be changed.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Working with level file</a><ul>
+<li><a class="reference internal" href="#using-the-converter">Using the converter</a></li>
+<li><a class="reference internal" href="#formatting-of-tiled-map-file">Formatting of Tiled map file</a></li>
+<li><a class="reference internal" href="#accuracy-of-conversion">Accuracy of conversion</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="level_format.html"
+                        title="previous chapter">Level format</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/level_converter.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="level_format.html" title="Level format"
+             >previous</a> |</li>
+        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, XrXr.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

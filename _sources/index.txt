@@ -15,10 +15,11 @@ that allows developers to focus more on gameplay features rather than basic comp
     loader
     player
     Level format <level_format>
+    level_converter
     
 Examples
 ========
-Examples can be found in the *examples* folder. Reading the examples should help understand the usage
+Examples can be found in the *examples* folder. Reading the examples should help with understanding the usage
 and structure of the different modules.
     
 Indices and tables

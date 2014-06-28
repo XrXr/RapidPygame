@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Level format &mdash; Rapid Pygame 0.2 documentation</title>
+    <title>Level format &mdash; Rapid Pygame 0.3 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.2',
+        VERSION:     '0.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Rapid Pygame 0.2 documentation" href="index.html" />
+    <link rel="top" title="Rapid Pygame 0.3 documentation" href="index.html" />
+    <link rel="next" title="Working with level file" href="level_converter.html" />
     <link rel="prev" title="Player class" href="player.html" /> 
   </head>
   <body>
@@ -38,9 +39,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="level_converter.html" title="Working with level file"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
           <a href="player.html" title="Player class"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -58,6 +62,9 @@ For collision based levels, the structure will look like:</p>
     2.png
     3.png
     ...
+    a.png
+    b.png
+    ...
 backgrounds/
     background1.jpg
     background2.jpg
@@ -69,26 +76,31 @@ map
 <p>The simplest level must have the map file and one image file under the tiles folder.</p>
 <p>Tiles images must be square and have consistent file extension. Background images must also have consistent file extension.</p>
 <div class="section" id="format-of-map">
-<h2>Format of <em>map</em><a class="headerlink" href="#format-of-map" title="Permalink to this headline">¶</a></h2>
+<span id="map"></span><h2>Format of <em>map</em><a class="headerlink" href="#format-of-map" title="Permalink to this headline">¶</a></h2>
 <p>A <em>map</em> file represents the landscape of the level and some of its property. It is consist of two
 parts, a config portion and a data portion. The two is separated by an empty line</p>
 <p>The config portion follows the following format:</p>
 <blockquote>
 <div><tt class="docutils literal"><span class="pre">config_name</span> <span class="pre">config_value</span></tt></div></blockquote>
 <p>Here is the list of config names and their description:</p>
-<ul class="simple">
-<li><em>collision</em>: The name of tiles that should collide with the player separated by &#8221;,&#8221;.
+<ul class="simple" id="background">
+<li><em>collision</em>: The name of tiles that should collide with the player separated by <tt class="docutils literal"><span class="pre">&quot;,&quot;</span></tt>.
 Each entry must be a single character or a range take looks like <em>&#8220;start...end&#8221;</em> where start start and end are both
-between 1 and 10 (inclusive)</li>
+between 1 and 9 (inclusive)</li>
 <li><em>gravity</em>: Downward acceleration of the player, in <span class="math">\(pixels/frame^2\)</span></li>
-<li><em>background</em> Format of <tt class="docutils literal"><span class="pre">filename</span> <span class="pre">speed</span></tt> filename will match a file in the backgrounds folder, and the speed controls
+<li><em>background</em>: Format of <tt class="docutils literal"><span class="pre">filename</span> <span class="pre">speed</span></tt> filename will match a file in the backgrounds folder, and the speed controls
 how fast the background moves. Multiple lines of this config can be specified, the backgrounds laid out in the order of
 the lines.</li>
+<li><em>exit</em>: <tt class="docutils literal"><span class="pre">x</span> <span class="pre">y</span> <span class="pre">width</span> <span class="pre">height</span></tt> The specification of a rectangle that represent the exit area. All values are integers</li>
+<li><em>spawn</em>: <tt class="docutils literal"><span class="pre">x</span> <span class="pre">y</span></tt> The spawn coordinate of the player, default is <tt class="docutils literal"><span class="pre">(0,0)</span></tt></li>
 </ul>
-<p>the simplest <em>map</em> file must contain a <em>collision</em> config</p>
+<p><em>map</em> file must at least contain the <em>collision</em> config</p>
 <p>The data portion of <em>map</em> are characters that each represent a tile in the level landscape. Their
-value match the names of files under the <em>tiles</em> folder. <em>e</em> is used to indicate the exit of a level
-<em>e</em> character will create an exit zone that is as long as the height of the level and as wide as a tile</p>
+value match the names of files under the <em>tiles</em> folder. Only numbers and alphabet characters are allowed. This limits
+the maximum possible number of unique tile image to 61. (<tt class="docutils literal"><span class="pre">0</span></tt> is used to represent empty)</p>
+<p>Working with the data portion of <em>map</em> as plain text can be very ineffective and time consuming.
+To address this, Rapid Pygame provides a <a class="reference internal" href="level_converter.html"><em>level converter</em></a> that will convert to and
+from <a class="reference external" href="http://www.mapeditor.org/">Tiled</a> map file.</p>
 </div>
 </div>
 
@@ -109,6 +121,9 @@ value match the names of files under the <em>tiles</em> folder. <em>e</em> is us
   <h4>Previous topic</h4>
   <p class="topless"><a href="player.html"
                         title="previous chapter">Player class</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="level_converter.html"
+                        title="next chapter">Working with level file</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/level_format.txt"
@@ -141,9 +156,12 @@ value match the names of files under the <em>tiles</em> folder. <em>e</em> is us
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
+          <a href="level_converter.html" title="Working with level file"
+             >next</a> |</li>
+        <li class="right" >
           <a href="player.html" title="Player class"
              >previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.2 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
