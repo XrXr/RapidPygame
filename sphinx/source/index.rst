@@ -1,0 +1,31 @@
+.. Rapid Pygame documentation master file, created by
+   sphinx-quickstart on Sun Jun  1 10:35:14 2014.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Introduction
+========================================
+Rapid pygame is a library designed to make game development using Pygame quicker. It contains classes and tools
+that allows developers to focus more on gameplay features rather than basic components.
+
+.. toctree::
+    :titlesonly:
+    
+    levelmgr
+    loader
+    player
+    Level format <level_format>
+    level_converter
+    
+Examples
+========
+Examples can be found in the *examples* folder. Reading the examples should help with understanding the usage
+and structure of the different modules.
+    
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
+

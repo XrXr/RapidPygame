@@ -1,5 +1,5 @@
 .idea
 *.pyc
-doc/
+sphinx/build
 rapidpg/
 examples/
