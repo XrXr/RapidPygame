@@ -32,8 +32,7 @@ class Player(Animated):
 
     def move(self, x, y):
         """
-        Alias for *plr.rect.move_ip*
-        :return:
+        Alias for ``plr.rect.move_ip``
         """
         self.rect.move_ip(x, y)
 

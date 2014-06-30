@@ -40,6 +40,10 @@ class Animation:
         self._since_last += 1
 
     def reset(self):
+        """
+        Reset the animation to the first frame and reset the
+        number of :func:`tick` calls needed to switch to the next frame
+        """
         self._since_last = 0
         self._current_frame = 0
 
@@ -49,7 +53,8 @@ class Animation:
 class Animated:
     """
     An animated object consisted of many animations.
-    Manage when to switch between animations
+    Manage when to switch between animations and which
+    animation to update.
     """
     def __init__(self, grouping, key_function, initial_key, reset_when_switch=True):
         """
@@ -68,11 +73,23 @@ class Animated:
             return self._grouping[self._current_key].surf
 
     def update(self):
+        """
+        Call to advance the animation, or switch to another
+        group of animation when the return value of :func:`key_function`
+        is changed.
+        """
         key = self._get_key()
         if self._reset:
             if key != self._current_key and self._current_key is not None:
                 self._grouping[self._current_key].reset()
         self._current_key = key
         self._grouping[self._current_key].tick()
+
+    def reset(self):
+        """
+        Call the :func:`Animation.reset` function of the current animation
+        """
+        self._grouping[self._current_key].reset()
+
 
     surf = property(_get_current_surface)
