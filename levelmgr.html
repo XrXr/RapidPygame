@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Level managers &mdash; Rapid Pygame 0.3 documentation</title>
+    <title>Level managers &mdash; Rapid Pygame 0.3.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Rapid Pygame 0.3 documentation" href="index.html" />
+    <link rel="top" title="Rapid Pygame 0.3.1 documentation" href="index.html" />
     <link rel="next" title="Image loader" href="loader.html" />
     <link rel="prev" title="Introduction" href="index.html" /> 
   </head>
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="index.html" title="Introduction"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -58,7 +58,7 @@
 <p>Rapid Pygame provides a level manager that keeps tract of level and is capable of level parsing</p>
 <span class="target" id="module-rapidpg.levelmgr.collision"></span><dl class="class">
 <dt id="rapidpg.levelmgr.collision.Level">
-<em class="property">class </em><tt class="descclassname">rapidpg.levelmgr.collision.</tt><tt class="descname">Level</tt><big>(</big><em>config</em>, <em>data</em>, <em>tiles</em>, <em>backgrounds=None</em>, <em>player=None</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">rapidpg.levelmgr.collision.</tt><tt class="descname">Level</tt><big>(</big><em>config</em>, <em>data</em>, <em>tiles</em>, <em>backgrounds=None</em>, <em>player=None</em>, <em>animations=()</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Responsible for handling player movement
 and level related collision detection. The structure of a level can be found in
 <a class="reference internal" href="level_format.html"><em>Level format</em></a></p>
@@ -74,7 +74,9 @@ is exposed, the built in movement method doesn&#8217;t have to be used.</p>
 <li><strong>config</strong> &#8211; The config dict of the level</li>
 <li><strong>data</strong> &#8211; The uninterpreted, but parsed level</li>
 <li><strong>tiles</strong> &#8211; A dict of tile sets, mapping a name to a surface</li>
+<li><strong>animations</strong> (<em>[Animation]</em>) &#8211; A list of animations that is shown in the background</li>
 <li><strong>backgrounds</strong> &#8211; A dict of backgrounds, mapping a name to a surface</li>
+<li><strong>animation</strong> (<em>[[Surface]]</em>) &#8211; </li>
 </ul>
 </td>
 </tr>
@@ -143,7 +145,7 @@ the player and the environment</p>
 <dl class="attribute">
 <dt id="rapidpg.levelmgr.collision.Level.draw_list">
 <tt class="descname">draw_list</tt><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.draw_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of 2 tuples, that are <tt class="docutils literal"><span class="pre">(surface,</span> <span class="pre">rect)</span></tt> drawing the whole list
+<dd><p>A list of tuples, that are <tt class="docutils literal"><span class="pre">(surface,</span> <span class="pre">rect)</span></tt>. Drawing the whole list
 with <tt class="docutils literal"><span class="pre">display_surf.blit(*level.draw_list)</span></tt> will draw
 the background, level, and player</p>
 </dd></dl>
@@ -194,8 +196,6 @@ the background, level, and player</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> &#8211; Path to the level in list format</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">None</td>
 </tr>
 </tbody>
 </table>
@@ -272,7 +272,7 @@ the background, level, and player</p>
         <li class="right" >
           <a href="index.html" title="Introduction"
              >previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

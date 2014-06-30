@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Player class &mdash; Rapid Pygame 0.3 documentation</title>
+    <title>Player class &mdash; Rapid Pygame 0.3.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,9 +24,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Rapid Pygame 0.3 documentation" href="index.html" />
+    <link rel="top" title="Rapid Pygame 0.3.1 documentation" href="index.html" />
     <link rel="next" title="Level format" href="level_format.html" />
-    <link rel="prev" title="Image loader" href="loader.html" /> 
+    <link rel="prev" title="Animation helpers" href="animation.html" /> 
   </head>
   <body>
     <div class="related">
@@ -42,9 +42,9 @@
           <a href="level_format.html" title="Level format"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="loader.html" title="Image loader"
+          <a href="animation.html" title="Animation helpers"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -53,12 +53,13 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="module-rapidpg.player">
-<span id="player-class"></span><h1>Player class<a class="headerlink" href="#module-rapidpg.player" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-rapidpg.types.player">
+<span id="player-class"></span><h1>Player class<a class="headerlink" href="#module-rapidpg.types.player" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="rapidpg.player.Player">
-<em class="property">class </em><tt class="descclassname">rapidpg.player.</tt><tt class="descname">Player</tt><big>(</big><em>surfs</em>, <em>interval</em><big>)</big><a class="headerlink" href="#rapidpg.player.Player" title="Permalink to this definition">¶</a></dt>
-<dd><p>An instance is compatible with the level manager. Note that if
+<dt id="rapidpg.types.player.Player">
+<em class="property">class </em><tt class="descclassname">rapidpg.types.player.</tt><tt class="descname">Player</tt><big>(</big><em>surfs</em>, <em>interval</em><big>)</big><a class="headerlink" href="#rapidpg.types.player.Player" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="animation.html#rapidpg.types.animation.Animated" title="rapidpg.types.animation.Animated"><tt class="xref py py-class docutils literal"><span class="pre">rapidpg.types.animation.Animated</span></tt></a></p>
+<p>An instance is compatible with the level manager. Note that if
 <a class="reference internal" href="levelmgr.html#rapidpg.levelmgr.collision.Level.update" title="rapidpg.levelmgr.collision.Level.update"><tt class="xref py py-func docutils literal"><span class="pre">rapidpg.levelmgr.collision.Level.update()</span></tt></a> is not used, a player
 instance doesn&#8217;t have to be passed to the level manager</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -74,27 +75,9 @@ instance doesn&#8217;t have to be passed to the level manager</p>
 </tbody>
 </table>
 <dl class="method">
-<dt id="rapidpg.player.Player.jump_progress">
-<tt class="descname">jump_progress</tt><big>(</big><em>landed=False</em><big>)</big><a class="headerlink" href="#rapidpg.player.Player.jump_progress" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="rapidpg.player.Player.move">
-<tt class="descname">move</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#rapidpg.player.Player.move" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <em>plr.rect.move_ip</em>
-:return:</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="rapidpg.player.Player.start_jump">
-<tt class="descname">start_jump</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.player.Player.start_jump" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="rapidpg.player.Player.surf">
-<tt class="descname">surf</tt><a class="headerlink" href="#rapidpg.player.Player.surf" title="Permalink to this definition">¶</a></dt>
-<dd><p>The player&#8217;s current surface. Note that every time this
-attribute is accessed, next frame in the animation is brought closer</p>
+<dt id="rapidpg.types.player.Player.move">
+<tt class="descname">move</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#rapidpg.types.player.Player.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for <tt class="docutils literal"><span class="pre">plr.rect.move_ip</span></tt></p>
 </dd></dl>
 
 </dd></dl>
@@ -108,8 +91,8 @@ attribute is accessed, next frame in the animation is brought closer</p>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="loader.html"
-                        title="previous chapter">Image loader</a></p>
+  <p class="topless"><a href="animation.html"
+                        title="previous chapter">Animation helpers</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="level_format.html"
                         title="next chapter">Level format</a></p>
@@ -148,9 +131,9 @@ attribute is accessed, next frame in the animation is brought closer</p>
           <a href="level_format.html" title="Level format"
              >next</a> |</li>
         <li class="right" >
-          <a href="loader.html" title="Image loader"
+          <a href="animation.html" title="Animation helpers"
              >previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

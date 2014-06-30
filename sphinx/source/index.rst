@@ -13,6 +13,7 @@ that allows developers to focus more on gameplay features rather than basic comp
     
     levelmgr
     loader
+    animation
     player
     Level format <level_format>
     level_converter

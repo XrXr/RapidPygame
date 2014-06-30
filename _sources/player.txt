@@ -1,5 +1,5 @@
 Player class
 =============
-.. automodule:: rapidpg.player
+.. automodule:: rapidpg.types.player
     :members:
-    :undoc-members:
+    :show-inheritance:

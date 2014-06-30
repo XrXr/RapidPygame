@@ -44,9 +44,13 @@ Here is the list of config names and their description:
   Each entry must be a single character or a range take looks like *"start...end"* where start start and end are both
   between 1 and 9 (inclusive)
 * *gravity*: Downward acceleration of the player, in :math:`pixels/frame^2`
-* *background*: Format of ``filename speed`` filename will match a file in the backgrounds folder, and the speed controls
+* *background*: ``filename speed`` filename will match a file in the backgrounds folder, and the speed controls
   how fast the background moves. Multiple lines of this config can be specified, the backgrounds laid out in the order of
   the lines.
+* *animations*: ``foldername interval x y`` an animated object will be created in the map at ``(x, y)``, and every interval
+  of updates, it will switch to the next frame. The frames are located under the ``foldername`` folder which is under the
+  ``animations`` folder. Each frame have purely numerical names; the numerical value of their name will decide the order of
+  animation. Like *backgrounds*, many of this field can be specified, the order of drawing is the order of lines.
 * *exit*: ``x y width height`` The specification of a rectangle that represent the exit area. All values are integers
 * *spawn*: ``x y`` The spawn coordinate of the player, default is ``(0,0)``
 

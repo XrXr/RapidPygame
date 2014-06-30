@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Working with level file &mdash; Rapid Pygame 0.3 documentation</title>
+    <title>Working with level file &mdash; Rapid Pygame 0.3.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Rapid Pygame 0.3 documentation" href="index.html" />
+    <link rel="top" title="Rapid Pygame 0.3.1 documentation" href="index.html" />
     <link rel="prev" title="Level format" href="level_format.html" /> 
   </head>
   <body>
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="level_format.html" title="Level format"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -69,7 +69,7 @@ handled correctly by the <a class="reference internal" href="levelmgr.html"><em>
 Order is important.</p>
 <p>For clarity, each item is formatted as <tt class="docutils literal"><span class="pre">&lt;layer</span> <span class="pre">name&gt;</span> <span class="pre">&lt;layer</span> <span class="pre">type&gt;</span> <span class="pre">&lt;description&gt;</span></tt></p>
 <ul>
-<li><p class="first">Control <em>Object</em></p>
+<li><p class="first">Controls <em>Object</em></p>
 <blockquote>
 <div><p>This layer is optional and can have a up to 2 unique objects, the objects must be rectangles and with type <em>exit</em> or <em>spawn</em>.
 Their location and/or size will be converted into the <em>exit</em> and <em>spawn</em> config field of the Rapid Pygame <a class="reference internal" href="level_format.html#map"><em>map</em></a></p>
@@ -80,6 +80,13 @@ Their location and/or size will be converted into the <em>exit</em> and <em>spaw
 <div><p>The landscape of the level. If more than 9 tile images are used, the converter assumes the name of the tile images are
 alphabet letters. The 10th tile is converted into <tt class="docutils literal"><span class="pre">a</span></tt> and continues following alphabetical order. When lower case letters
 run out, upper case is used. The maximum number of unique tile images is 61</p>
+</div></blockquote>
+</li>
+<li><p class="first">Animations <em>Object</em></p>
+<blockquote>
+<div><p>Objects that are animated on the map. Each object in this layer correspond to a config entry in the <a class="reference internal" href="level_format.html#map"><em>map</em></a>.
+The name of each object will be the folder name under the <tt class="docutils literal"><span class="pre">animations</span></tt> folder and the type will be the interval between
+frames.</p>
 </div></blockquote>
 </li>
 <li><p class="first"><tt class="docutils literal"><span class="pre">&lt;background</span> <span class="pre">name&gt;</span> <span class="pre">&lt;speed&gt;</span></tt> <em>Image</em></p>
@@ -153,7 +160,7 @@ not be identical, as the order of the config fields might be changed.</p>
         <li class="right" >
           <a href="level_format.html" title="Level format"
              >previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

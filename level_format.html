@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Level format &mdash; Rapid Pygame 0.3 documentation</title>
+    <title>Level format &mdash; Rapid Pygame 0.3.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Rapid Pygame 0.3 documentation" href="index.html" />
+    <link rel="top" title="Rapid Pygame 0.3.1 documentation" href="index.html" />
     <link rel="next" title="Working with level file" href="level_converter.html" />
     <link rel="prev" title="Player class" href="player.html" /> 
   </head>
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="player.html" title="Player class"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -88,9 +88,13 @@ parts, a config portion and a data portion. The two is separated by an empty lin
 Each entry must be a single character or a range take looks like <em>&#8220;start...end&#8221;</em> where start start and end are both
 between 1 and 9 (inclusive)</li>
 <li><em>gravity</em>: Downward acceleration of the player, in <span class="math">\(pixels/frame^2\)</span></li>
-<li><em>background</em>: Format of <tt class="docutils literal"><span class="pre">filename</span> <span class="pre">speed</span></tt> filename will match a file in the backgrounds folder, and the speed controls
+<li><em>background</em>: <tt class="docutils literal"><span class="pre">filename</span> <span class="pre">speed</span></tt> filename will match a file in the backgrounds folder, and the speed controls
 how fast the background moves. Multiple lines of this config can be specified, the backgrounds laid out in the order of
 the lines.</li>
+<li><em>animations</em>: <tt class="docutils literal"><span class="pre">foldername</span> <span class="pre">interval</span> <span class="pre">x</span> <span class="pre">y</span></tt> an animated object will be created in the map at <tt class="docutils literal"><span class="pre">(x,</span> <span class="pre">y)</span></tt>, and every interval
+of updates, it will switch to the next frame. The frames are located under the <tt class="docutils literal"><span class="pre">foldername</span></tt> folder which is under the
+<tt class="docutils literal"><span class="pre">animations</span></tt> folder. Each frame have purely numerical names; the numerical value of their name will decide the order of
+animation. Like <em>backgrounds</em>, many of this field can be specified, the order of drawing is the order of lines.</li>
 <li><em>exit</em>: <tt class="docutils literal"><span class="pre">x</span> <span class="pre">y</span> <span class="pre">width</span> <span class="pre">height</span></tt> The specification of a rectangle that represent the exit area. All values are integers</li>
 <li><em>spawn</em>: <tt class="docutils literal"><span class="pre">x</span> <span class="pre">y</span></tt> The spawn coordinate of the player, default is <tt class="docutils literal"><span class="pre">(0,0)</span></tt></li>
 </ul>
@@ -161,7 +165,7 @@ from <a class="reference external" href="http://www.mapeditor.org/">Tiled</a> ma
         <li class="right" >
           <a href="player.html" title="Player class"
              >previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

@@ -6,4 +6,3 @@ constrain.
 
 .. automodule:: rapidpg.loader.image
     :members:
-    :undoc-members:

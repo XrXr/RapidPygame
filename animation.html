@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Animation helpers &mdash; Rapid Pygame 0.3.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.3.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Rapid Pygame 0.3.1 documentation" href="index.html" />
+    <link rel="next" title="Player class" href="player.html" />
+    <link rel="prev" title="Image loader" href="loader.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="player.html" title="Player class"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="loader.html" title="Image loader"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Rapid Pygame 0.3.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-rapidpg.types.animation">
+<span id="animation-helpers"></span><h1>Animation helpers<a class="headerlink" href="#module-rapidpg.types.animation" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="rapidpg.types.animation.Animated">
+<em class="property">class </em><tt class="descclassname">rapidpg.types.animation.</tt><tt class="descname">Animated</tt><big>(</big><em>grouping</em>, <em>key_function</em>, <em>initial_key</em>, <em>reset_when_switch=True</em><big>)</big><a class="headerlink" href="#rapidpg.types.animation.Animated" title="Permalink to this definition">¶</a></dt>
+<dd><p>An animated object consisted of many animations.
+Manage when to switch between animations and which
+animation to update.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>grouping</strong> (<em>dict</em>) &#8211; A dict that maps key to <a class="reference internal" href="#rapidpg.types.animation.Animation" title="rapidpg.types.animation.Animation"><tt class="xref py py-class docutils literal"><span class="pre">Animation</span></tt></a></li>
+<li><strong>key_function</strong> (<em>function</em>) &#8211; A function that decides which animation is to be displayed</li>
+<li><strong>initial_key</strong> (<em>str</em>) &#8211; The key to use before any calls to the <em>key_function</em></li>
+<li><strong>reset_when_switch</strong> &#8211; Whether the animation should reset to the first frame
+when a switch happens</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rapidpg.types.animation.Animated.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.types.animation.Animated.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call the <a class="reference internal" href="#rapidpg.types.animation.Animation.reset" title="rapidpg.types.animation.Animation.reset"><tt class="xref py py-func docutils literal"><span class="pre">Animation.reset()</span></tt></a> function of the current animation</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.types.animation.Animated.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.types.animation.Animated.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call to advance the animation, or switch to another
+group of animation when the return value of <tt class="xref py py-func docutils literal"><span class="pre">key_function()</span></tt>
+is changed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="rapidpg.types.animation.Animation">
+<em class="property">class </em><tt class="descclassname">rapidpg.types.animation.</tt><tt class="descname">Animation</tt><big>(</big><em>surfs</em>, <em>interval</em><big>)</big><a class="headerlink" href="#rapidpg.types.animation.Animation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store surfaces needed for animation and keep track of
+the current frame in the animation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>surfs</strong> (<em>sequence</em>) &#8211; The sequence of Surfaces in the animation</li>
+<li><strong>interval</strong> (<em>int</em>) &#8211; The number of <tt class="xref py py-func docutils literal"><span class="pre">update()</span></tt> calls between
+switching to the next frame</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="rapidpg.types.animation.Animation.reset">
+<tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.types.animation.Animation.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the animation to the first frame and reset the
+number of <a class="reference internal" href="#rapidpg.types.animation.Animation.tick" title="rapidpg.types.animation.Animation.tick"><tt class="xref py py-func docutils literal"><span class="pre">tick()</span></tt></a> calls needed to switch to the next frame</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.types.animation.Animation.tick">
+<tt class="descname">tick</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.types.animation.Animation.tick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call this to advance the animation. When <em>interval</em> is 5
+for the first 5 calls, surf will not change, on the 6th call
+surf is switched to the next frame</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="loader.html"
+                        title="previous chapter">Image loader</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="player.html"
+                        title="next chapter">Player class</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/animation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="player.html" title="Player class"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="loader.html" title="Image loader"
+             >previous</a> |</li>
+        <li><a href="index.html">Rapid Pygame 0.3.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, XrXr.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+    </div>
+  </body>
+</html>

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Image loader &mdash; Rapid Pygame 0.3 documentation</title>
+    <title>Image loader &mdash; Rapid Pygame 0.3.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.3',
+        VERSION:     '0.3.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,8 +24,8 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="Rapid Pygame 0.3 documentation" href="index.html" />
-    <link rel="next" title="Player class" href="player.html" />
+    <link rel="top" title="Rapid Pygame 0.3.1 documentation" href="index.html" />
+    <link rel="next" title="Animation helpers" href="animation.html" />
     <link rel="prev" title="Level managers" href="levelmgr.html" /> 
   </head>
   <body>
@@ -39,12 +39,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="player.html" title="Player class"
+          <a href="animation.html" title="Animation helpers"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="levelmgr.html" title="Level managers"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -88,6 +88,21 @@ a directory name or a file name. <tt class="docutils literal"><span class="pre">
 </table>
 </dd></dl>
 
+<dl class="staticmethod">
+<dt id="rapidpg.loader.image.ImageLoader.is_decimal">
+<em class="property">static </em><tt class="descname">is_decimal</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#rapidpg.loader.image.ImageLoader.is_decimal" title="Permalink to this definition">¶</a></dt>
+<dd><p>check if all characters in the string are in &#8216;0&#8217; to &#8216;9&#8217;, and there is
+more than 1 character</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="rapidpg.loader.image.ImageLoader.load_all">
 <tt class="descname">load_all</tt><big>(</big><em>path</em>, <em>convert_alpha=False</em>, <em>raw=False</em><big>)</big><a class="headerlink" href="#rapidpg.loader.image.ImageLoader.load_all" title="Permalink to this definition">¶</a></dt>
@@ -110,9 +125,29 @@ a directory name or a file name. <tt class="docutils literal"><span class="pre">
 </dd></dl>
 
 <dl class="method">
+<dt id="rapidpg.loader.image.ImageLoader.load_all_frames">
+<tt class="descname">load_all_frames</tt><big>(</big><em>path</em>, <em>convert_alpha=False</em><big>)</big><a class="headerlink" href="#rapidpg.loader.image.ImageLoader.load_all_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load all files that have purely numerical name in a directory, assume
+they are images. Return a list of surface in the order of the
+numerical values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> &#8211; Path relative to the origin in list format
+pointing to a directory</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a list of surfaces</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="rapidpg.loader.image.ImageLoader.load_frames">
 <tt class="descname">load_frames</tt><big>(</big><em>path</em>, <em>frames</em>, <em>convert_alpha=False</em><big>)</big><a class="headerlink" href="#rapidpg.loader.image.ImageLoader.load_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load a sequence of image named 1.b...*frames*.b from <em>path</em></p>
+<dd><p>Load a sequence of image named 1.ext...*frames*.ext from <em>path</em>
+<em>ext</em> must be consistent</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -120,7 +155,7 @@ a directory name or a file name. <tt class="docutils literal"><span class="pre">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>path</strong> &#8211; Path in list format pointing to a directory</li>
 <li><strong>frames</strong> &#8211; Number of frames to load</li>
-<li><strong>convert_alpha</strong> &#8211; <em>boolean</em> convert surfaces with convert_alpha()</li>
+<li><strong>convert_alpha</strong> &#8211; whether surfaces are converted with convert_alpha()</li>
 </ul>
 </td>
 </tr>
@@ -166,8 +201,8 @@ a directory name or a file name. <tt class="docutils literal"><span class="pre">
   <p class="topless"><a href="levelmgr.html"
                         title="previous chapter">Level managers</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="player.html"
-                        title="next chapter">Player class</a></p>
+  <p class="topless"><a href="animation.html"
+                        title="next chapter">Animation helpers</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/loader.txt"
@@ -200,12 +235,12 @@ a directory name or a file name. <tt class="docutils literal"><span class="pre">
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="player.html" title="Player class"
+          <a href="animation.html" title="Animation helpers"
              >next</a> |</li>
         <li class="right" >
           <a href="levelmgr.html" title="Level managers"
              >previous</a> |</li>
-        <li><a href="index.html">Rapid Pygame 0.3 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Rapid Pygame 0.3.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">

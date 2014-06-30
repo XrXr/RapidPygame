@@ -24,7 +24,7 @@ Order is important.
 
 For clarity, each item is formatted as ``<layer name> <layer type> <description>``
 
-* Control *Object*
+* Controls *Object*
 
     This layer is optional and can have a up to 2 unique objects, the objects must be rectangles and with type *exit* or *spawn*.
     Their location and/or size will be converted into the *exit* and *spawn* config field of the Rapid Pygame :ref:`map <map>`
@@ -34,6 +34,12 @@ For clarity, each item is formatted as ``<layer name> <layer type> <description>
     The landscape of the level. If more than 9 tile images are used, the converter assumes the name of the tile images are
     alphabet letters. The 10th tile is converted into ``a`` and continues following alphabetical order. When lower case letters
     run out, upper case is used. The maximum number of unique tile images is 61
+    
+* Animations *Object*
+    
+    Objects that are animated on the map. Each object in this layer correspond to a config entry in the :ref:`map <map>`.
+    The name of each object will be the folder name under the ``animations`` folder and the type will be the interval between
+    frames.
     
 * ``<background name> <speed>`` *Image*
 
