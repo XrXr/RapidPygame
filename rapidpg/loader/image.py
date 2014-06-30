@@ -27,6 +27,7 @@ class ImageLoader:
         """
         check if all characters in the string are in '0' to '9', and there is
         more than 1 character
+        
         :rtype: bool
         """
         if len(s) is 0:
