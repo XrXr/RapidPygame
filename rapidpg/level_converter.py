@@ -171,11 +171,6 @@ def convert():
             "width": str(width),
             "height": str(height)
         })
-        layer = ET.SubElement(root, "layer", {
-            "name": file_name,
-            "width": str(level_width),
-            "height": str(level_height)
-        })
         config = parse_config(raw_config)
         if "animations" in config:
             animation_layer = ET.SubElement(root, "objectgroup",
@@ -190,6 +185,11 @@ def convert():
                     "y": str(y)
                 })
 
+        layer = ET.SubElement(root, "layer", {
+            "name": file_name,
+            "width": str(level_width),
+            "height": str(level_height)
+        })
         csv = ""
         for l in level:
             csv += ",".join(l) + ",\n"
