@@ -1,3 +1,6 @@
+#  Rapid Pygame
+#  https://github.com/XrXr/RapidPygame
+#  License: MIT
 """
 Utilities for the library, not all of the functions are suppose to be used
 externally
@@ -25,31 +28,56 @@ def parse_config(raw_config):
                 result.add(e)
         return result
 
-    def extract_float(s):
-        return float(s.strip())
-
-    def parse_int(how_many):
+    def map_parser_builder(function, how_many):
         """
-        Factory function for int parsers
+        Factory function for building parsers that just map
+        a function over all the elements
         """
         def parser(s):
-            l = list(map(int, s.split(" ")))
-            return tuple(l[:how_many + 1])
+            t = tuple(map(function, s.strip().split(" ")))
+            result = t[:how_many + 1]
+            if len(result) == 1:
+                return result[0]
+            return result
         return parser
 
-    def parse_background(s):
-        n, _, speed = s.strip().partition(" ")
-        return [(n, int(speed))]
+    def get_constructor(s):
+        if s == 's':
+            return str
+        if s == 'f':
+            return float
+        if s == 'i':
+            return int
 
-    processors = {"collision": collision_reader, "gravity": extract_float,
-                  "resolution": parse_int(2),
-                  "background": parse_background,
-                  "exit": parse_int(4),
-                  "spawn": parse_int(2)}
+    def parser_builder(format_):
+        """
+        Factory for complex parsers.
+        :param str format_: ``"e+e+e..."`` where ``e = 's' | 'f' | 'i'``
+        """
+        look_up = tuple(map(get_constructor, format_.split('+')))
+
+        def parser(s):
+            result = []
+            elements = s.split(" ")
+            for c in range(len(look_up)):
+                result.append(look_up[c](elements[c]))
+            return tuple(result)
+        return parser
+
+    def wrap_with_list(fn):
+        return lambda s: [fn(s)]
+
+    processors = {"collision": collision_reader,
+                  "gravity": map_parser_builder(float, 1),
+                  "resolution": map_parser_builder(int, 2),
+                  "background": wrap_with_list(parser_builder("s+i")),
+                  "exit": map_parser_builder(int, 4),
+                  "spawn": map_parser_builder(int, 2),
+                  "animations": parser_builder("s+i+i+i")}
     # read the raw lines
     config = []
     for config_line in raw_config:
-        name, _, value = config_line.partition(" ")
+        name, _, value = config_line.strip().partition(" ")
         config.append((name, value))
     # process everything
     processed_config = dict()
@@ -77,5 +105,8 @@ def set_alpha(surface, alpha):
 if __name__ == "__main__":
     print(parse_config(["collision 1...7, 10, 12, 20...30"]))
     print(parse_config(["collision 1...7,10,12,20...30"]))
+    print(parse_config(["gravity 15.1"]))
+    print(parse_config(["resolution 800 600"]))
     print(parse_config(["background static 0", "background trees 15", "background mountains 5"]))
-    print(parse_config(["exit 10 10 10 10", "resolution 800 600", "spawn 10 20"]))
+    print(parse_config(["exit 10 10 10 10", "spawn 10 20"]))
+    print(parse_config(["animations asdkj 123 1 2"]))

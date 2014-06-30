@@ -1,0 +1,78 @@
+class Animation:
+    """
+    Store surfaces needed for animation and keep track of
+    the current frame in the animation
+    """
+    def __init__(self, surfs, interval):
+        """
+        :param sequence surfs: The sequence of Surfaces in the animation
+        :param int interval: The number of :func:`update` calls between
+            switching to the next frame
+        """
+        self._current_frame = 0
+        self._since_last = 0
+        self._highest_index = len(surfs) - 1
+        self._surfs = tuple(surfs)
+        self._interval = interval
+
+    def _advance(self):
+        propose = self._current_frame + 1
+        if propose > self._highest_index:
+            self._current_frame = 0
+            return
+        self._current_frame = propose
+
+    def _due(self):
+        return self._since_last == self._interval
+
+    def _get_current_surface(self):
+        return self._surfs[self._current_frame]
+
+    def tick(self):
+        """
+        Call this to advance the animation. When *interval* is 5
+        for the first 5 calls, surf will not change, on the 6th call
+        surf is switched to the next frame
+        """
+        if self._due():
+            self._since_last = 0
+            self._advance()
+        self._since_last += 1
+
+    def reset(self):
+        self._since_last = 0
+        self._current_frame = 0
+
+    surf = property(_get_current_surface)
+
+
+class Animated:
+    """
+    An animated object consisted of many animations.
+    Manage when to switch between animations
+    """
+    def __init__(self, grouping, key_function, initial_key, reset_when_switch=True):
+        """
+        :param Bunch grouping: A Bunch with attributes that the key_function will return
+        :param function key_function: A function that decides which animation is to be displayed
+        :param str initial_key: The key to use before any calls to the *key_function*
+        :param reset_when_switch: Whether the animation should reset to the first frame
+            when a switch happens
+        """
+        self._grouping = grouping
+        self._get_key = key_function
+        self._current_key = initial_key
+        self._reset = reset_when_switch
+
+    def _get_current_surface(self):
+            return getattr(self._grouping, self._current_key).surf
+
+    def update(self):
+        key = self._get_key()
+        if self._reset:
+            if key != self._current_key and self._current_key is not None:
+                getattr(self._grouping, self._current_key).reset()
+        self._current_key = key
+        getattr(self._grouping, self._current_key).tick()
+
+    surf = property(_get_current_surface)

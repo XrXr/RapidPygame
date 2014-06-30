@@ -1,8 +1,9 @@
 #  Rapid Pygame
 #  https://github.com/XrXr/RapidPygame
 #  License: MIT
-import os
-from os.path import join, isfile, splitext
+from macpath import sep
+from os import listdir
+from os.path import join, isfile, splitext, abspath
 from pygame.image import load
 
 
@@ -10,6 +11,8 @@ class ImageLoader:
     """
     Convenient class for loading images using relative path painless
     """
+    decimal_set = {str(x) for x in range(1, 11)}
+
     def __init__(self, origin):
         """
         Create a loader pointing at the *origin*. Any loading is relative to the *origin*
@@ -19,6 +22,20 @@ class ImageLoader:
         :param origin: path string
         """
         self.origin = origin
+
+    @staticmethod
+    def is_decimal(s):
+        """
+        check if all characters in the string are in '0' to '9', and there is
+        more than 1 character
+        :rtype: bool
+        """
+        if len(s) is 0:
+            return False
+        for c in s:
+            if c not in ImageLoader.decimal_set:
+                return False
+        return True
 
     def load_image(self, path, convert_alpha=False):
         """
@@ -42,7 +59,7 @@ class ImageLoader:
         """
         result = dict()
         dir_path = self.get_path(path)
-        for name in os.listdir(dir_path):
+        for name in listdir(dir_path):
             file_path = join(dir_path, name)
             if isfile(file_path):
                 striped = splitext(name)[0]
@@ -55,18 +72,39 @@ class ImageLoader:
                 result[striped] = load(file_path).convert()
         return result
 
+    def load_all_frames(self, path, convert_alpha=False):
+        """
+        Load all files that have purely numerical name in a directory, assume
+        they are images. Return a list of surface in the order of the
+        numerical values.
+
+        :param path: Path relative to the origin in list format
+            pointing to a directory
+        :return: a list of surfaces
+        """
+        to_load = []
+        for name in listdir(self.get_path(path)):
+            as_list = name.split('.')
+            if len(as_list) <= 2 and ImageLoader.is_decimal(as_list[0]) and \
+                    isfile(self.get_path(path + [name])):
+                    to_load.append(name)
+        to_load.sort(key=lambda name: name.split('.')[0])
+        return [self.load_image(path + [x], convert_alpha)
+                for x in to_load]
+
     def load_frames(self, path, frames, convert_alpha=False):
         """
-        Load a sequence of image named 1.b...*frames*.b from *path*
+        Load a sequence of image named 1.ext...*frames*.ext from *path*
+        *ext* must be consistent
 
         :param path: Path in list format pointing to a directory
         :param frames: Number of frames to load
-        :param convert_alpha: *boolean* convert surfaces with convert_alpha()
+        :param convert_alpha: whether surfaces are converted with convert_alpha()
         :return: a list of surfaces
         """
         dir_path = self.get_path(path)
         extension = ""
-        for name in os.listdir(dir_path):
+        for name in listdir(dir_path):
             file = join(dir_path, name)
             if isfile(file):
                 striped, file_ext = splitext(name)
@@ -89,4 +127,4 @@ class ImageLoader:
         :param path: a path in list format
         :return: path string
         """
-        return join(self.origin, *path)
+        return abspath(join(self.origin, *path))

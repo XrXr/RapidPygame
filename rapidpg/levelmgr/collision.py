@@ -9,6 +9,7 @@ from rapidpg.loader.image import ImageLoader
 from .camera import Camera
 import math
 from ..utilities import parse_config
+from ..types.animation import Animation
 
 
 class Level:
@@ -17,7 +18,8 @@ class Level:
     and level related collision detection. The structure of a level can be found in
     :doc:`level_format`
     """
-    def __init__(self, config, data, tiles, backgrounds=None, player=None):
+    def __init__(self, config, data, tiles, backgrounds=None, player=None,
+                 animations=[]):
         """
         Contains the interpreted level and methods that should be called every frame
         to update the level. Also handle player movement. Since the interpreted level
@@ -27,13 +29,16 @@ class Level:
         :param config: The config dict of the level
         :param data: The uninterpreted, but parsed level
         :param tiles: A dict of tile sets, mapping a name to a surface
+        :param [Animation] animations: A list of animations that is shown in the background
         :param backgrounds: A dict of backgrounds, mapping a name to a surface
+        :param [[Surface]] animation:
         """
 
         self.player = player
         self.config = config
         self.data = data
         self.tiles = tiles
+        self.animations = animations
         for k in tiles:
             self.tile_width = tiles[k].get_rect().width
             break
@@ -69,12 +74,15 @@ class Level:
         # backgrounds
         for surf, rect, _ in self.backgrounds:
             dl.append((surf, (rect.x, self.camera.rect.height - rect.height)))
+        # animations
+        for animation, point in self.animations:
+            dl.append((animation.surf, (point[0] - self.camera.rect.x, point[1] - self.camera.rect.y)))
         # landscape
         y = 0
         for l in self.data:
             x = 0
             for c in l:
-                if c in ('0', 'e', 's'):
+                if c is '0':
                     x += 1
                     continue
                 dl.append((self.tiles[c],
@@ -86,7 +94,8 @@ class Level:
         dl.append((self.player.surf,
                    self.player.rect.move(-self.camera.rect.x, -self.camera.rect.y)))
         return dl
-    #: A list of 2 tuples, that are ``(surface, rect)`` drawing the whole list
+
+    #: A list of tuples, that are ``(surface, rect)``. Drawing the whole list
     #: with ``display_surf.blit(*level.draw_list)`` will draw
     #: the background, level, and player
     draw_list = property(_get_draw_list)
@@ -189,6 +198,8 @@ class Level:
                 self.player.move(self.player.speed, 0)
             self.player.dir = 'right'
 
+        for a in self.animations:
+            a[0].tick()
         self.camera.update(self.player.rect)
         return m
 
@@ -327,7 +338,6 @@ class LevelManager:
         Load a level relative to the origin
 
         :param path: Path to the level in list format
-        :return: None
         """
         map_path = join(self.loader.get_path(path), "map")
         with open(map_path, 'r') as level_file:
@@ -337,7 +347,11 @@ class LevelManager:
         data = LevelManager._parse_level(as_list[separator + 1:])
         tiles = self.loader.load_all(path + ["tiles"])
         backgrounds = self.loader.load_all(path + ["backgrounds"], True)
-        self.levels.append(Level(config, data, tiles, player=self.player, backgrounds=backgrounds))
+        animations = []
+        folder, interval, x, y = config['animations']
+        surfs = self.loader.load_all_frames(path + ["animations", folder], True)
+        animations.append((Animation(surfs, interval), (x, y)))
+        self.levels.append(Level(config, data, tiles, player=self.player, backgrounds=backgrounds, animations=animations))
 
     def next_level(self):
         """
