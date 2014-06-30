@@ -1,7 +1,6 @@
 #  Rapid Pygame
 #  https://github.com/XrXr/RapidPygame
 #  License: MIT
-from macpath import sep
 from os import listdir
 from os.path import join, isfile, splitext, abspath
 from pygame.image import load
@@ -11,7 +10,7 @@ class ImageLoader:
     """
     Convenient class for loading images using relative path painless
     """
-    decimal_set = {str(x) for x in range(1, 11)}
+    decimal_set = {str(x) for x in range(10)}
 
     def __init__(self, origin):
         """

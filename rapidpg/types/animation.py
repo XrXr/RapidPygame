@@ -53,7 +53,7 @@ class Animated:
     """
     def __init__(self, grouping, key_function, initial_key, reset_when_switch=True):
         """
-        :param Bunch grouping: A Bunch with attributes that the key_function will return
+        :param dict grouping: A dict that maps key to :class:`Animation`
         :param function key_function: A function that decides which animation is to be displayed
         :param str initial_key: The key to use before any calls to the *key_function*
         :param reset_when_switch: Whether the animation should reset to the first frame
@@ -65,14 +65,14 @@ class Animated:
         self._reset = reset_when_switch
 
     def _get_current_surface(self):
-            return getattr(self._grouping, self._current_key).surf
+            return self._grouping[self._current_key].surf
 
     def update(self):
         key = self._get_key()
         if self._reset:
             if key != self._current_key and self._current_key is not None:
-                getattr(self._grouping, self._current_key).reset()
+                self._grouping[self._current_key].reset()
         self._current_key = key
-        getattr(self._grouping, self._current_key).tick()
+        self._grouping[self._current_key].tick()
 
     surf = property(_get_current_surface)

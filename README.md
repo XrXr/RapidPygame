@@ -5,8 +5,15 @@ developers to focus more on gameplay features rather than basic components when 
 
 [Documentation](http://xrxr.github.io/RapidPygame/)
 
-__Requirement__
+__Requirements__
 - Python 3+
 - Pygame
 
-_Created for MiniLD 51: Revenge of the Tool Jam_
+###Testing
+
+There are tests for parts of the library under the `test` folder. Tests are written for [pytest]
+
+
+_Initially created for MiniLD 51: Revenge of the Tool Jam_
+
+[pytest]:http://pytest.org/latest/

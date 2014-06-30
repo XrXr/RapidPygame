@@ -1,12 +1,13 @@
 #  Rapid Pygame
 #  https://github.com/XrXr/RapidPygame
 #  License: MIT
-import pygame
+from pygame import SRCALPHA
 from pygame.rect import Rect
 from pygame import Surface
 from os.path import join
 from rapidpg.loader.image import ImageLoader
 from .camera import Camera
+from ..types.player import Player
 import math
 from ..utilities import parse_config
 from ..types.animation import Animation
@@ -19,7 +20,7 @@ class Level:
     :doc:`level_format`
     """
     def __init__(self, config, data, tiles, backgrounds=None, player=None,
-                 animations=[]):
+                 animations=tuple()):
         """
         Contains the interpreted level and methods that should be called every frame
         to update the level. Also handle player movement. Since the interpreted level
@@ -33,8 +34,9 @@ class Level:
         :param backgrounds: A dict of backgrounds, mapping a name to a surface
         :param [[Surface]] animation:
         """
-
-        self.player = player
+        dummy_player = Player([], 0)
+        dummy_player.speed = 0
+        self.player = player if player else dummy_player
         self.config = config
         self.data = data
         self.tiles = tiles
@@ -45,9 +47,11 @@ class Level:
 
         self.level_height = len(self.data) * self.tile_width
         self.level_width = len(self.data[0]) * self.tile_width
+        self.camera = None
         self.camera = Camera(self.config['resolution'],
-                             Rect((0, 0), (self.level_width, self.level_height)),
-                             player.speed)
+                             Rect((0, 0), (self.level_width,
+                                           self.level_height)),
+                             self.player.speed)
 
         self.backgrounds = []
         if backgrounds:
@@ -66,6 +70,7 @@ class Level:
             self.spawn = config['spawn']
         if 'exit' in config:
             self.exit = Rect(*config['exit'])
+
         self.player.rect.x, self.player.rect.y = self.spawn
         self.camera.snap_to(self.player.rect)
 
@@ -106,7 +111,7 @@ class Level:
         while width < self.camera.rect.width:
             width += surf_width
         width *= 2
-        constructed = Surface((width, surf.get_height()), pygame.SRCALPHA)
+        constructed = Surface((width, surf.get_height()), SRCALPHA)
         x = 0
         while x < width:
             constructed.blit(surf, (x, 0))
@@ -154,7 +159,7 @@ class Level:
         else:
             self.player.move(0, self.player.down_speed)
 
-        if movement['up'] and not block:
+        if movement['up'] and not block and self.player.down_speed is 0:
             self.player.start_jump()
         if self.player.jumping:
             inflated = self.player.rect.move(0, -self.player.up_speed)
@@ -200,6 +205,7 @@ class Level:
 
         for a in self.animations:
             a[0].tick()
+        self.player.update()
         self.camera.update(self.player.rect)
         return m
 
@@ -348,10 +354,11 @@ class LevelManager:
         tiles = self.loader.load_all(path + ["tiles"])
         backgrounds = self.loader.load_all(path + ["backgrounds"], True)
         animations = []
-        folder, interval, x, y = config['animations']
-        surfs = self.loader.load_all_frames(path + ["animations", folder], True)
-        animations.append((Animation(surfs, interval), (x, y)))
-        self.levels.append(Level(config, data, tiles, player=self.player, backgrounds=backgrounds, animations=animations))
+        for folder, interval, x, y in config['animations']:
+            surfs = self.loader.load_all_frames(path + ["animations", folder], True)
+            animations.append((Animation(surfs, interval), (x, y)))
+        self.levels.append(Level(config, data, tiles, player=self.player,
+                                 backgrounds=backgrounds, animations=animations))
 
     def next_level(self):
         """

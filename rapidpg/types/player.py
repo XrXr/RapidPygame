@@ -1,10 +1,10 @@
 #  Rapid Pygame
 #  https://github.com/XrXr/RapidPygame
 #  License: MIT
-from itertools import cycle
+from .animation import Animated, Animation
+from pygame.rect import Rect
 
-
-class Player():
+class Player(Animated):
     """
     An instance is compatible with the level manager. Note that if
     :func:`rapidpg.levelmgr.collision.Level.update` is not used, a player
@@ -15,6 +15,8 @@ class Player():
         :param surfs: A list of surfaces for animation
         :param interval: The interval between animation updates
         """
+        super(Player, self).__init__({"right": Animation(surfs, interval)},
+                                     lambda: "right", "right")
         self.jump_frames_left = 0
         self.jumping = False
         self.in_air = False
@@ -22,19 +24,11 @@ class Player():
         self.down_speed = 0
         self.dir = 'right'
         self.surfs = surfs
-        self.rect = surfs[0].get_rect()
+        self.rect = Rect(0, 0, 0, 0)
+        if surfs:
+            self.rect = surfs[0].get_rect()
         self.animation_interval = interval
         self.speed = 10
-        self._frames_since_last = 0
-        self._frame_cycle = cycle(range(len(surfs)))
-        self._current_frame = self._frame_cycle.__next__()
-
-    def _get_surf(self):
-        self._frames_since_last += 1
-        if self._frames_since_last == self.animation_interval:
-            self._frames_since_last = 0
-            self._current_frame = self._frame_cycle.__next__()
-        return self.surfs[self._current_frame]
 
     def move(self, x, y):
         """
@@ -51,7 +45,3 @@ class Player():
     def jump_progress(self, landed=False):
         if landed:
             self.jumping = False
-
-    #: The player's current surface. Note that every time this
-    #: attribute is accessed, next frame in the animation is brought closer
-    surf = property(_get_surf)

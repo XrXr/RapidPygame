@@ -5,7 +5,7 @@
 Utilities for the library, not all of the functions are suppose to be used
 externally
 """
-import pygame
+from pygame import BLEND_RGBA_MIN
 
 
 def parse_config(raw_config):
@@ -73,7 +73,7 @@ def parse_config(raw_config):
                   "background": wrap_with_list(parser_builder("s+i")),
                   "exit": map_parser_builder(int, 4),
                   "spawn": map_parser_builder(int, 2),
-                  "animations": parser_builder("s+i+i+i")}
+                  "animations": wrap_with_list(parser_builder("s+i+i+i"))}
     # read the raw lines
     config = []
     for config_line in raw_config:
@@ -99,7 +99,7 @@ def set_alpha(surface, alpha):
     :return: surface
     """
     new = surface.copy()
-    new.fill((255, 255, 255, alpha), None, pygame.BLEND_RGBA_MIN)
+    new.fill((255, 255, 255, alpha), None, BLEND_RGBA_MIN)
     return new
 
 if __name__ == "__main__":

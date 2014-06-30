@@ -8,7 +8,7 @@ Made to make tile map editing painless
 import argparse
 from os.path import dirname, basename, abspath
 import pygame
-from . import ImageLoader
+from .loader.image import ImageLoader
 from .utilities import parse_config
 import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import ParseError
@@ -61,11 +61,11 @@ def convert():
             header += "{0} {1}\n".format(e.get("name"), e.get("value"))
             if e.get("name") == "collision":
                 has_collision = True
-        spawn_node = tree.find("objectgroup/object[@type='spawn']")
+        spawn_node = tree.find("objectgroup[@name='Controls']/object[@type='spawn']")
         if spawn_node is not None:
             header += "spawn {0} {1}\n".format(spawn_node.get("x"),
                                                spawn_node.get("y"))
-        exit_node = tree.find("objectgroup/object[@type='exit']")
+        exit_node = tree.find("objectgroup[@name='Controls']/object[@type='exit']")
         if exit_node is not None:
             header += "exit {0} {1} {2} {3}\n".format(exit_node.get("x"),
                                                       exit_node.get("y"),
@@ -73,6 +73,11 @@ def convert():
                                                       exit_node.get("height"))
         for e in tree.findall("imagelayer"):
             header += "background {0}\n".format(e.get("name"))
+        for a in tree.findall("objectgroup[@name='Animations']/*"):
+            header += "animations {0} {1} {2} {3}\n".format(a.get("name"),
+                                                            a.get("type"),
+                                                            a.get("x"),
+                                                            a.get("y"))
         # enable collision for all tiles by default
         if not has_collision and max_tile > 0:
             cl = "1"
@@ -92,7 +97,7 @@ def convert():
     except ParseError:
         # Rapid Pygame to Tiled
         # these configs are reflected in the map, not as properties
-        excluded_configs = ["background", "exit", "spawn"]
+        excluded_configs = ["background", "exit", "spawn", "animations"]
         loader = ImageLoader(dirname(abspath(args.file)))
         pygame.display.init()
         try:
@@ -171,14 +176,26 @@ def convert():
             "width": str(level_width),
             "height": str(level_height)
         })
+        config = parse_config(raw_config)
+        if "animations" in config:
+            animation_layer = ET.SubElement(root, "objectgroup",
+                                            name="Animations",
+                                            width=level_width,
+                                            height=level_height)
+            for folder, interval, x, y in config['animations']:
+                ET.SubElement(animation_layer, "object", {
+                    "name": str(folder),
+                    "type": str(interval),
+                    "x": str(x),
+                    "y": str(y)
+                })
 
         csv = ""
         for l in level:
             csv += ",".join(l) + ",\n"
         csv = csv[:-2]
-
         ET.SubElement(layer, "data", encoding="csv").text = csv
-        config = parse_config(raw_config)
+
         if "exit" in config or "spawn" in config:
             control_layer = ET.SubElement(root, "objectgroup", name="Controls",
                                           width=level_width, height=level_height)

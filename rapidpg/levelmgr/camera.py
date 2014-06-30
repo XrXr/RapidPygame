@@ -1,7 +1,7 @@
 #  Rapid Pygame
 #  https://github.com/XrXr/RapidPygame
 #  License: MIT
-import pygame
+from pygame.rect import Rect
 
 
 class Camera:
@@ -34,7 +34,7 @@ class Camera:
         self.horizontal_speed = x_speed
         self.vertical_speed = y_speed
         self.screen_res = screen_res
-        self.rect = pygame.Rect((0, 0), screen_res)
+        self.rect = Rect((0, 0), screen_res)
 
         self.x_bound = self.level_rect.width - self.rect.width
         self.y_bound = self.level_rect.height - self.rect.height

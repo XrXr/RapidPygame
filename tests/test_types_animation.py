@@ -1,5 +1,4 @@
 import rapidpg.types.animation as animation
-from rapidpg.types.containers import Bunch
 
 
 def call(function, num):
@@ -47,7 +46,7 @@ class TestAnimated:
 
         animation_a = animation.Animation([1, 2, 3], 5)
         animation_b = animation.Animation([4, 5, 6], 5)
-        a = animation.Animated(Bunch(original=animation_a, another=animation_b),
+        a = animation.Animated(dict(original=animation_a, another=animation_b),
                                change_in_eleven, "original")
         assert a.surf == 1
         call(a.update, 5)
@@ -67,7 +66,7 @@ class TestAnimated:
 
         def get_key():
             return key
-        a = animation.Animated(Bunch(original=animation_a, another=animation_b),
+        a = animation.Animated(dict(original=animation_a, another=animation_b),
                                get_key, key)
         assert a.surf == 1
         call(a.update, 6)

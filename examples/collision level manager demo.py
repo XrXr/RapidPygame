@@ -24,9 +24,8 @@ for rect in mgr.current_level.interpreted:
     color = (randrange(0, 256), randrange(0, 256), randrange(0, 256))
     a.fill(pygame.Color(color[0], color[1], color[2]), rect)
 
-for rect in mgr.current_level.exits:
-    color = (randrange(0, 256), randrange(0, 256), randrange(0, 256))
-    a.fill(pygame.Color(color[0], color[1], color[2]), rect)
+color = (randrange(0, 256), randrange(0, 256), randrange(0, 256))
+a.fill(pygame.Color(color[0], color[1], color[2]), mgr.current_level.exit)
 pygame.display.update()
 
 while True:
