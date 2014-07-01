@@ -55,5 +55,5 @@ while True:
         a.blit(*e)
     # for e in v:
     # a.fill(pygame.Color("red"), e)
-    clock.tick(30)
+    clock.tick(60)
     pygame.display.update()

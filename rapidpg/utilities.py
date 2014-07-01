@@ -101,12 +101,3 @@ def set_alpha(surface, alpha):
     new = surface.copy()
     new.fill((255, 255, 255, alpha), None, BLEND_RGBA_MIN)
     return new
-
-if __name__ == "__main__":
-    print(parse_config(["collision 1...7, 10, 12, 20...30"]))
-    print(parse_config(["collision 1...7,10,12,20...30"]))
-    print(parse_config(["gravity 15.1"]))
-    print(parse_config(["resolution 800 600"]))
-    print(parse_config(["background static 0", "background trees 15", "background mountains 5"]))
-    print(parse_config(["exit 10 10 10 10", "spawn 10 20"]))
-    print(parse_config(["animations asdkj 123 1 2"]))

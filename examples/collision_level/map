@@ -1,9 +1,9 @@
 collision 1...7
-gravity 3
+gravity 1.5
 resolution 800 600
 background static 0
-background trees 5
-background bushes 15
+background trees 4
+background bushes 8
 exit 100 100 100 100
 spawn 800 0
 animations sun 15 800 100
