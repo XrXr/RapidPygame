@@ -41,20 +41,14 @@ def parse_config(raw_config):
             return result
         return parser
 
-    def get_constructor(s):
-        if s == 's':
-            return str
-        if s == 'f':
-            return float
-        if s == 'i':
-            return int
+    dispatch = {'s': str, 'f': float, 'i': int}
 
     def parser_builder(format_):
         """
         Factory for complex parsers.
         :param str format_: ``"e+e+e..."`` where ``e = 's' | 'f' | 'i'``
         """
-        look_up = tuple(map(get_constructor, format_.split('+')))
+        look_up = tuple(map(dispatch.get, format_.split('+')))
 
         def parser(s):
             result = []
