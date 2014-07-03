@@ -4,22 +4,10 @@ container data structures. The focus is on the difference in access
 speed when the list of keys never change
 """
 from collections import namedtuple
-from time import time
+from timer import measure
+
 
 TEST_CYCLES = 10 * 1000000
-
-
-def measure(s):
-    def out(func):
-        def wrapper(*args):
-            start = time()
-            func(*args)
-            passed = time() - start
-            print("Finished {0} cycles for {1} in {2:0.5f} seconds, {3} accesses were made".
-                  format(TEST_CYCLES, s, passed, TEST_CYCLES * 4))
-        return wrapper
-    return out
-
 
 class Bunch:
     """
@@ -36,7 +24,7 @@ class Plain:
         self.a, self.b, self.c, self.d = seq
 
 
-@measure('dict')
+@measure('dict', TEST_CYCLES)
 def dict_test(d):
     for _ in range(TEST_CYCLES):
         d['a']
@@ -45,7 +33,7 @@ def dict_test(d):
         d['d']
 
 
-@measure('Bunch')
+@measure('Bunch', TEST_CYCLES)
 def bunch_test(b):
     for _ in range(TEST_CYCLES):
         b.a
@@ -54,7 +42,7 @@ def bunch_test(b):
         b.d
 
 
-@measure('named tuple')
+@measure('named tuple', TEST_CYCLES)
 def named_tuple_test(ti):
     for _ in range(TEST_CYCLES):
         ti.a
@@ -63,7 +51,7 @@ def named_tuple_test(ti):
         ti.d
 
 
-@measure('Plain')
+@measure('Plain', TEST_CYCLES)
 def plain_slots_test(t):
     for _ in range(TEST_CYCLES):
         t.a
@@ -72,7 +60,7 @@ def plain_slots_test(t):
         t.d
 
 
-@measure('tuple')
+@measure('tuple', TEST_CYCLES)
 def tuple_indexing(t):
     for _ in range(TEST_CYCLES):
         t[0]
@@ -81,7 +69,7 @@ def tuple_indexing(t):
         t[3]
 
 
-@measure('list')
+@measure('list', TEST_CYCLES)
 def list_indexing(t):
     for _ in range(TEST_CYCLES):
         t[0]
@@ -90,7 +78,7 @@ def list_indexing(t):
         t[3]
 
 
-@measure('checks')
+@measure('checks', TEST_CYCLES)
 def multiple_checks(get):
     for _ in range(TEST_CYCLES):
         get('a')
