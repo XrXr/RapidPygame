@@ -23,7 +23,6 @@ manager.next_level()
 clock = pygame.time.Clock()
 
 movement_dict = {"up": False, "down": False, "left": False, "right": False}
-up_released = True
 while True:
     movement_dict['up'] = False
     for e in pygame.event.get():
@@ -31,9 +30,8 @@ while True:
             pygame.quit()
             raise SystemExit
         elif e.type == pygame.KEYDOWN:
-            if e.key == pygame.K_UP and up_released:
+            if e.key == pygame.K_UP:
                 movement_dict['up'] = True
-                up_released = False
             if e.key == pygame.K_DOWN:
                 movement_dict['down'] = True
             if e.key == pygame.K_LEFT:
@@ -42,7 +40,7 @@ while True:
                 movement_dict['right'] = True
         elif e.type == pygame.KEYUP:
             if e.key == pygame.K_UP:
-                up_released = True
+                movement_dict['up'] = False
             if e.key == pygame.K_DOWN:
                 movement_dict['down'] = False
             if e.key == pygame.K_LEFT:

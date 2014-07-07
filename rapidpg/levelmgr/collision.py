@@ -130,6 +130,82 @@ class Level:
                 rect.x = -rect.width / 2
             rect.move_ip(speed, 0)
 
+    def _gravity(self):
+        """
+        This method is called every update cycle to simulate gravity.
+        Override this method to produce different behavior
+        """
+        self.player.down_speed += self.config['gravity']
+        inflated = self.player.rect.copy()
+        inflated.height += self.player.down_speed
+        # this method of collision testing will work for high speed,
+        # unlike moving the rect
+        collision_test = inflated.collidelistall(self.interpreted)
+        if collision_test:  # there are stuffs in there!
+            closest_rect = Level.find_min([self.interpreted[x]
+                                           for x in collision_test])
+            delta = closest_rect.y - (self.player.rect.y +
+                                      self.player.rect.height)
+            self.player.move(0, delta)
+            self.player.jumping = False
+            self.player.down_speed = 0
+        else:
+            self.player.move(0, self.player.down_speed)
+
+    def _jump_condition(self, movement):
+        """
+        This method is called to decide when a jump is possible
+
+        :param: movement: The movement dict forwarded from :func:`update()`
+        :rtype: bool
+        """
+        return movement['up'] and self.player.down_speed is 0
+
+    def _jump_action(self):
+        """
+        Called by :func:`update()` when :func:`_is_jumping()` returns true
+        """
+        inflated = self.player.rect.move(0, -self.player.up_speed)
+        inflated.height += self.player.up_speed
+        collision_test = inflated.collidelistall(self.interpreted)
+        if collision_test:  # when there are stuff in the list
+            closest_rect = Level.find_max([self.interpreted[x]
+                                           for x in collision_test])
+            delta = math.fabs(self.player.rect.y -
+                              (closest_rect.y + closest_rect.height))
+            self.player.move(0, -delta)
+            self.player.jumping = False
+        else:
+            self.player.move(0, -self.player.up_speed)
+
+    def _left_action(self):
+        """
+        Called by :func:`update()` when left is held
+        """
+        collision_test = self.player.rect.move(-self.player.speed, 0). \
+            collidelist(self.interpreted)
+        if collision_test != -1:
+            delta = math.fabs(self.player.rect.x -
+                              (self.interpreted[collision_test].x +
+                               self.interpreted[collision_test].width))
+            self.player.move(-delta, 0)
+        else:
+            self._bg_right()
+            self.player.move(-self.player.speed, 0)
+        self.player.dir = 'left'
+
+    def _right_action(self):
+        collision_test = self.player.rect.move(self.player.speed, 0). \
+            collidelist(self.interpreted)
+        if collision_test != -1:
+            delta = math.fabs(self.interpreted[collision_test].x -
+                              (self.player.rect.x + self.player.rect.width))
+            self.player.move(delta, 0)
+        else:
+            self._bg_left()
+            self.player.move(self.player.speed, 0)
+        self.player.dir = 'right'
+
     def update(self, movement):
         """
         This method should be called every frame to update the location of
@@ -137,77 +213,24 @@ class Level:
 
         :param movement: Dict with keys *up, down, left, right* mapping to booleans
         """
-        m = []
-        self.player.down_speed += self.config['gravity']
-        inflated = self.player.rect.copy()
-        inflated.height += self.player.down_speed
-        # this method of collision testing will work for high speed,
-        # unlike moving the rect
-        collision_test = inflated.collidelistall(self.interpreted)
-        block = False
-        if collision_test:  # there are stuffs in there!
-            closest_rect = Level.find_min([self.interpreted[x]
-                                           for x in collision_test])
-            delta = closest_rect.y - (self.player.rect.y +
-                                      self.player.rect.height)
-            self.player.move(0, delta)
-            if self.player.jumping:
-                block = True
-            self.player.jumping = False
-            self.player.down_speed = 0
-            m.append(closest_rect)
-        else:
-            self.player.move(0, self.player.down_speed)
+        self._gravity()
 
-        if movement['up'] and not block and self.player.down_speed is 0:
+        if self._jump_condition(movement):
             self.player.start_jump()
+
         if self.player.jumping:
-            inflated = self.player.rect.move(0, -self.player.up_speed)
-            inflated.height += self.player.up_speed
-            collision_test = inflated.collidelistall(self.interpreted)
-            if collision_test:  # when there are stuff in the list
-                closest_rect = Level.find_max([self.interpreted[x]
-                                               for x in collision_test])
-                m.append(closest_rect)
-                delta = math.fabs(self.player.rect.y -
-                                  (closest_rect.y + closest_rect.height))
-                self.player.move(0, -delta)
-                self.player.jumping = False
-            else:
-                self.player.move(0, -self.player.up_speed)
+            self._jump_action()
 
         if movement['left']:
-            collision_test = self.player.rect.move(-self.player.speed, 0). \
-                collidelist(self.interpreted)
-            if collision_test != -1:
-                delta = math.fabs(self.player.rect.x -
-                                 (self.interpreted[collision_test].x +
-                                  self.interpreted[collision_test].width))
-                self.player.move(-delta, 0)
-                m.append(self.interpreted[collision_test])
-            else:
-                self._bg_right()
-                self.player.move(-self.player.speed, 0)
-            self.player.dir = 'left'
+            self._left_action()
 
         if movement['right']:
-            collision_test = self.player.rect.move(self.player.speed, 0). \
-                collidelist(self.interpreted)
-            if collision_test != -1:
-                delta = math.fabs(self.interpreted[collision_test].x -
-                                 (self.player.rect.x + self.player.rect.width))
-                self.player.move(delta, 0)
-                m.append(self.interpreted[collision_test])
-            else:
-                self._bg_left()
-                self.player.move(self.player.speed, 0)
-            self.player.dir = 'right'
+            self._right_action()
 
         for a in self.animations:
             a[0].update()
         self.player.update()
         self.camera.update(self.player.rect)
-        return m
 
     def get_dimensions(self):
         """

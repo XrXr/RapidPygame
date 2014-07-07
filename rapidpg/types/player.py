@@ -28,7 +28,7 @@ class Player(Animated):
         if surfs:
             self.rect = surfs[0].get_rect()
         self.animation_interval = interval
-        self.speed = 10
+        self.speed = 7
 
     def move(self, x, y):
         """
