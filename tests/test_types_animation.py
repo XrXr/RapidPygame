@@ -10,24 +10,24 @@ class TestAnimation:
     def test_tick(self):
         a = animation.Animation([1, 2, 3, 5, 6, 7], 5)
         assert a.surf == 1
-        call(a.tick, 5)
+        call(a.update, 5)
         assert a.surf == 1
-        a.tick()
+        a.update()
         assert a.surf == 2
-        call(a.tick, 4)
-        a.tick()
+        call(a.update, 4)
+        a.update()
         assert a.surf == 3
 
     def test_cycle(self):
         a = animation.Animation([1, 2, 3, 5, 6, 7], 5)
-        call(a.tick, 30)
+        call(a.update, 30)
         assert a.surf == 7
-        a.tick()
+        a.update()
         assert a.surf == 1
 
     def test_reset(self):
         a = animation.Animation([1, 2, 3, 5, 6, 7], 5)
-        call(a.tick, 20)
+        call(a.update, 20)
         assert a.surf == 5
         a.reset()
         assert a.surf == 1

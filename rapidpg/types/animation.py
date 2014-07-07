@@ -28,7 +28,7 @@ class Animation:
     def _get_current_surface(self):
         return self._surfs[self._current_frame]
 
-    def tick(self):
+    def update(self):
         """
         Call this to advance the animation. When *interval* is 5
         for the first 5 calls, surf will not change, on the 6th call
@@ -83,7 +83,7 @@ class Animated:
             if key != self._current_key and self._current_key is not None:
                 self._grouping[self._current_key].reset()
         self._current_key = key
-        self._grouping[self._current_key].tick()
+        self._grouping[self._current_key].update()
 
     def reset(self):
         """

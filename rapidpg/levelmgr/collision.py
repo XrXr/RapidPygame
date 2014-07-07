@@ -204,7 +204,7 @@ class Level:
             self.player.dir = 'right'
 
         for a in self.animations:
-            a[0].tick()
+            a[0].update()
         self.player.update()
         self.camera.update(self.player.rect)
         return m
