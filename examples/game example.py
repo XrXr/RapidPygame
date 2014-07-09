@@ -51,7 +51,5 @@ while True:
     v = manager.current_level.update(movement_dict)
     for e in manager().draw_list:  # same thing as manager.current_level.draw_list
         a.blit(*e)
-    # for e in v:
-    # a.fill(pygame.Color("red"), e)
     clock.tick(60)
     pygame.display.update()

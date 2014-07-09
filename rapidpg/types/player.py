@@ -37,10 +37,9 @@ class Player(Animated):
         self.rect.move_ip(x, y)
 
     def start_jump(self):
+        """
+        This method is used by the level manager to start the jump
+        """
         if not self.jumping:
             self.jumping = True
             self.in_air = True
-
-    def jump_progress(self, landed=False):
-        if landed:
-            self.jumping = False

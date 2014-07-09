@@ -24,7 +24,10 @@ class Level:
         """
         Contains the interpreted level and methods that should be called every frame
         to update the level. Also handle player movement. Since the interpreted level
-        is exposed, the built in movement method doesn't have to be used.
+        is exposed, the built in movement method doesn't have to be used. The movement
+        methods can be overridden by a child class to achieve a different movement
+        effect. Note that if the child class has a different constructor,
+        the :class:`LevelManager` will have to be sub classed as well.
 
         :param player: The player object to manipulate
         :param config: The config dict of the level
@@ -195,6 +198,9 @@ class Level:
         self.player.dir = 'left'
 
     def _right_action(self):
+        """
+        Called by :func:`update()` when right is held
+        """
         collision_test = self.player.rect.move(self.player.speed, 0). \
             collidelist(self.interpreted)
         if collision_test != -1:
@@ -209,7 +215,9 @@ class Level:
     def update(self, movement):
         """
         This method should be called every frame to update the location of
-        the player and the environment
+        the player and the environment. :class:`Player`'s :func:`start_jump` and
+        :attr:`jumping` is used to start the jump and check if a jump is in progress,
+        respectively.
 
         :param movement: Dict with keys *up, down, left, right* mapping to booleans
         """
