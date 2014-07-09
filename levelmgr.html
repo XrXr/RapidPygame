@@ -64,7 +64,10 @@ and level related collision detection. The structure of a level can be found in
 <a class="reference internal" href="level_format.html"><em>Level format</em></a></p>
 <p>Contains the interpreted level and methods that should be called every frame
 to update the level. Also handle player movement. Since the interpreted level
-is exposed, the built in movement method doesn&#8217;t have to be used.</p>
+is exposed, the built in movement method doesn&#8217;t have to be used. The movement
+methods can be overridden by a child class to achieve a different movement
+effect. Note that if the child class has a different constructor,
+the <a class="reference internal" href="#rapidpg.levelmgr.collision.LevelManager" title="rapidpg.levelmgr.collision.LevelManager"><tt class="xref py py-class docutils literal"><span class="pre">LevelManager</span></tt></a> will have to be sub classed as well.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -82,6 +85,47 @@ is exposed, the built in movement method doesn&#8217;t have to be used.</p>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.Level._gravity">
+<tt class="descname">_gravity</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level._gravity" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called every update cycle to simulate gravity.
+Override this method to produce different behavior</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.Level._jump_action">
+<tt class="descname">_jump_action</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level._jump_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by <a class="reference internal" href="#rapidpg.levelmgr.collision.Level.update" title="rapidpg.levelmgr.collision.Level.update"><tt class="xref py py-func docutils literal"><span class="pre">update()</span></tt></a> when <tt class="xref py py-func docutils literal"><span class="pre">_is_jumping()</span></tt> returns true</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.Level._jump_condition">
+<tt class="descname">_jump_condition</tt><big>(</big><em>movement</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level._jump_condition" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called to decide when a jump is possible</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Param:</th><td class="field-body">movement: The movement dict forwarded from <a class="reference internal" href="#rapidpg.levelmgr.collision.Level.update" title="rapidpg.levelmgr.collision.Level.update"><tt class="xref py py-func docutils literal"><span class="pre">update()</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.Level._left_action">
+<tt class="descname">_left_action</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level._left_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by <a class="reference internal" href="#rapidpg.levelmgr.collision.Level.update" title="rapidpg.levelmgr.collision.Level.update"><tt class="xref py py-func docutils literal"><span class="pre">update()</span></tt></a> when left is held</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.Level._right_action">
+<tt class="descname">_right_action</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level._right_action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by <a class="reference internal" href="#rapidpg.levelmgr.collision.Level.update" title="rapidpg.levelmgr.collision.Level.update"><tt class="xref py py-func docutils literal"><span class="pre">update()</span></tt></a> when right is held</p>
+</dd></dl>
+
 <dl class="staticmethod">
 <dt id="rapidpg.levelmgr.collision.Level.find_max">
 <em class="property">static </em><tt class="descname">find_max</tt><big>(</big><em>rect_list</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.find_max" title="Permalink to this definition">¶</a></dt>
@@ -131,7 +175,9 @@ with the player or not is specified in the level file. See
 <dt id="rapidpg.levelmgr.collision.Level.update">
 <tt class="descname">update</tt><big>(</big><em>movement</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.Level.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method should be called every frame to update the location of
-the player and the environment</p>
+the player and the environment. <tt class="xref py py-class docutils literal"><span class="pre">Player</span></tt>&#8216;s <tt class="xref py py-func docutils literal"><span class="pre">start_jump()</span></tt> and
+<tt class="xref py py-attr docutils literal"><span class="pre">jumping</span></tt> is used to start the jump and check if a jump is in progress,
+respectively.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -187,6 +233,19 @@ the background, level, and player</p>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="rapidpg.levelmgr.collision.LevelManager._get_current_level">
+<tt class="descname">_get_current_level</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.LevelManager._get_current_level" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Level</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="rapidpg.levelmgr.collision.LevelManager.load_level">
 <tt class="descname">load_level</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#rapidpg.levelmgr.collision.LevelManager.load_level" title="Permalink to this definition">¶</a></dt>

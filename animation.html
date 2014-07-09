@@ -103,7 +103,7 @@ the current frame in the animation</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>surfs</strong> (<em>sequence</em>) &#8211; The sequence of Surfaces in the animation</li>
-<li><strong>interval</strong> (<em>int</em>) &#8211; The number of <tt class="xref py py-func docutils literal"><span class="pre">update()</span></tt> calls between
+<li><strong>interval</strong> (<em>int</em>) &#8211; The number of <a class="reference internal" href="#rapidpg.types.animation.Animation.update" title="rapidpg.types.animation.Animation.update"><tt class="xref py py-func docutils literal"><span class="pre">update()</span></tt></a> calls between
 switching to the next frame</li>
 </ul>
 </td>
@@ -114,12 +114,12 @@ switching to the next frame</li>
 <dt id="rapidpg.types.animation.Animation.reset">
 <tt class="descname">reset</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.types.animation.Animation.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset the animation to the first frame and reset the
-number of <a class="reference internal" href="#rapidpg.types.animation.Animation.tick" title="rapidpg.types.animation.Animation.tick"><tt class="xref py py-func docutils literal"><span class="pre">tick()</span></tt></a> calls needed to switch to the next frame</p>
+number of <tt class="xref py py-func docutils literal"><span class="pre">tick()</span></tt> calls needed to switch to the next frame</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="rapidpg.types.animation.Animation.tick">
-<tt class="descname">tick</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.types.animation.Animation.tick" title="Permalink to this definition">¶</a></dt>
+<dt id="rapidpg.types.animation.Animation.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="headerlink" href="#rapidpg.types.animation.Animation.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Call this to advance the animation. When <em>interval</em> is 5
 for the first 5 calls, surf will not change, on the 6th call
 surf is switched to the next frame</p>

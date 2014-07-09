@@ -5,4 +5,4 @@ Rapid Pygame provides a level manager that keeps tract of level and is capable o
 
 .. automodule:: rapidpg.levelmgr.collision
     :members:
-    :undoc-members:
+    :private-members:
