@@ -9,6 +9,14 @@ __Requirements__
 - Python 3+
 - Pygame
 
+###Installation
+
+Simplest way to install is by using `pip`
+
+`pip install rapidpg`
+
+downloading the source then running `setup.py install` works too
+
 ###Testing
 
 There are tests for parts of the library under the `test` folder. Tests are written for [pytest]
