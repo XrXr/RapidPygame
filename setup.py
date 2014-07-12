@@ -11,4 +11,9 @@ setup(
   url = 'https://github.com/XrXr/RapidPygame',
   download_url = 'https://github.com/XrXr/RapidPygame/tarball/0.3.1',
   keywords = ['game developement', 'pygame'],
+  classifiers=[
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3"
+  ]
 )
