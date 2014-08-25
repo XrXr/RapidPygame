@@ -44,37 +44,37 @@ class Camera:
         self.up_threshold = self.rect.height * up_threshold / 100
         self.down_threshold = self.rect.height * down_threshold / 100
 
-    def pan_left(self):
+    def pan_left(self, h_speed):
         if self.rect.x == 0:
             return
-        if self.rect.move(-self.horizontal_speed, 0).x < 0:
+        if self.rect.move(-h_speed, 0).x < 0:
             self.rect.move_ip(-self.rect.x, 0)
         else:
-            self.rect.move_ip(-self.horizontal_speed, 0)
+            self.rect.move_ip(-h_speed, 0)
 
-    def pan_right(self):
+    def pan_right(self, h_speed):
         if self.rect.x == self.x_bound:
             return
-        if self.rect.x + self.horizontal_speed + self.rect.width > self.level_rect.width:
+        if self.rect.x + h_speed + self.rect.width > self.level_rect.width:
             self.rect.move_ip((self.level_rect.width - (self.rect.x + self.rect.width)), 0)
         else:
-            self.rect.move_ip(self.horizontal_speed, 0)
+            self.rect.move_ip(h_speed, 0)
 
-    def pan_down(self):
+    def pan_down(self, v_speed):
         if self.rect.y == self.y_bound:
             return
-        if self.rect.y + self.vertical_speed + self.rect.height > self.level_rect.height:
+        if self.rect.y + v_speed + self.rect.height > self.level_rect.height:
             self.rect.move_ip(0, (self.level_rect.height - self.rect.y - self.rect.height))
         else:
-            self.rect.move_ip(0, self.vertical_speed)
+            self.rect.move_ip(0, v_speed)
 
-    def pan_up(self):
+    def pan_up(self, v_speed):
         if self.rect.y == 0:
             return
-        if self.rect.move(0, -self.vertical_speed).y < 0:
+        if self.rect.move(0, -v_speed).y < 0:
             self.rect.move_ip(0, -self.rect.y)
         else:
-            self.rect.move_ip(0, -self.vertical_speed)
+            self.rect.move_ip(0, -v_speed)
 
     def snap_to(self, player_rect):
         propose = self.rect.move(0, 0)
@@ -82,12 +82,15 @@ class Camera:
         propose.y = min(max(0, player_rect.y - self.screen_res[1] / 2), self.y_bound)
         self.rect = propose
 
-    def update(self, player_rect):
+    def update(self, player_rect, custom_speed=None):
+        h_speed, v_speed = self.horizontal_speed, self.vertical_speed
+        if custom_speed:
+            h_speed, v_speed = custom_speed
         if player_rect.x - self.rect.x > self.right_threshold:
-            self.pan_right()
+            self.pan_right(h_speed)
         elif player_rect.x - self.rect.x < self.left_threshold:
-            self.pan_left()
+            self.pan_left(h_speed)
         if player_rect.y - self.rect.y > self.down_threshold:
-            self.pan_down()
+            self.pan_down(v_speed)
         elif player_rect.y - self.rect.y < self.up_threshold:
-            self.pan_up()
+            self.pan_up(v_speed)

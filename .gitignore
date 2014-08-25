@@ -2,3 +2,6 @@
 *.pyc
 setup.cfg
 sphinx/
+dist
+build
+*.egg-info

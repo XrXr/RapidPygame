@@ -4,7 +4,7 @@ from setuptools import find_packages
 setup(
   name = 'rapidpg',
   packages = find_packages(),
-  version = '0.3.1',
+  version = '0.3.2',
   description = 'A collections of tools for rapid game developement with pygame',
   author = 'XrXr',
   author_email = 'xrsquared@gmail.com',

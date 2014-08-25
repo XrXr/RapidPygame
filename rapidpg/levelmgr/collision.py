@@ -64,7 +64,9 @@ class Level:
                     surf = self._construct_background(surf)
                 self.backgrounds.append([surf, surf.get_rect(), speed])
         #: A list of rects that should collide with the player, see :func:`interpret`
+        print("interpreting")
         self.interpreted = self.interpret()
+        print("interpreting finished")
         #: Spawn point of the player ``(x, y)``
         self.spawn = 0, 0
         #: Exit of the level. ``(x, y)`` None if unspecified in the level
@@ -77,6 +79,23 @@ class Level:
         self.player.rect.x, self.player.rect.y = self.spawn
         self.camera.snap_to(self.player.rect)
 
+    def get_animation_draw_list(self):
+        dl = []
+        for animation, point in self.animations:
+            dl.append((animation.surf, (point[0] - self.camera.rect.x, point[1] - self.camera.rect.y)))
+        return dl
+
+    def get_background_draw_list(self):
+        dl = []
+        for surf, rect, _ in self.backgrounds:
+            dl.append((surf, (rect.x, self.camera.rect.height - rect.height)))
+        return dl
+
+    def get_player_draw_tuple(self):
+        return (self.player.surf,
+                self.player.rect.move(-self.camera.rect.x, -self.camera.rect.y))
+
+
     def _get_draw_list(self):
         dl = []
         # backgrounds
@@ -85,19 +104,46 @@ class Level:
         # animations
         for animation, point in self.animations:
             dl.append((animation.surf, (point[0] - self.camera.rect.x, point[1] - self.camera.rect.y)))
+
+        cam_x = self.camera.rect.x
+        cam_top_right = cam_x + self.camera.rect.width
+        cam_y = self.camera.rect.y
+        cam_bottom = cam_y + self.camera.rect.height
         # landscape
-        y = 0
-        for l in self.data:
-            x = 0
-            for c in l:
-                if c is '0':
-                    x += 1
+        for y in range(math.floor(cam_y / self.tile_width),
+                       math.floor(cam_bottom / self.tile_width)):
+            for x in range(math.floor(cam_x / self.tile_width),
+                           math.floor(cam_top_right / self.tile_width)):
+                try:
+                    self.data[y][x]
+                except IndexError:
+                    print("x is ", x, "y is", y, "y length", len(self.data), "x length", len(self.data[0]))
+                    print(cam_x, cam_y)
+                if self.data[y][x] is '0':
                     continue
-                dl.append((self.tiles[c],
-                           (x * self.tile_width - self.camera.rect.x,
-                            y * self.tile_width - self.camera.rect.y)))
-                x += 1
-            y += 1
+                dl.append((self.tiles[self.data[y][x]],
+                          (x * self.tile_width - self.camera.rect.x,
+                           y * self.tile_width - self.camera.rect.y)))
+
+
+        # y = 0
+        # for l in self.data:
+        #     x = 0
+        #     # if y < cam_y or y > cam_bottom:
+        #     #     y += 1
+        #     #     continue
+        #     for c in l:
+        #         if c is '0':
+        #             x += 1
+        #             continue
+        #         # if x < cam_x or x > cam_top_right:
+        #         #     x += 1
+        #         #     continue
+        #         dl.append((self.tiles[c],
+        #                    (x * self.tile_width - self.camera.rect.x,
+        #                     y * self.tile_width - self.camera.rect.y)))
+        #         x += 1
+        #     y += 1
         # player
         dl.append((self.player.surf,
                    self.player.rect.move(-self.camera.rect.x, -self.camera.rect.y)))
@@ -144,6 +190,7 @@ class Level:
         # this method of collision testing will work for high speed,
         # unlike moving the rect
         collision_test = inflated.collidelistall(self.interpreted)
+        final = self.player.down_speed
         if collision_test:  # there are stuffs in there!
             closest_rect = Level.find_min([self.interpreted[x]
                                            for x in collision_test])
@@ -152,8 +199,10 @@ class Level:
             self.player.move(0, delta)
             self.player.jumping = False
             self.player.down_speed = 0
+            final = delta
         else:
             self.player.move(0, self.player.down_speed)
+        return final
 
     def _jump_condition(self, movement):
         """
@@ -187,15 +236,18 @@ class Level:
         """
         collision_test = self.player.rect.move(-self.player.speed, 0). \
             collidelist(self.interpreted)
+        final = -self.player.speed
         if collision_test != -1:
             delta = math.fabs(self.player.rect.x -
                               (self.interpreted[collision_test].x +
                                self.interpreted[collision_test].width))
             self.player.move(-delta, 0)
+            final = delta
         else:
             self._bg_right()
             self.player.move(-self.player.speed, 0)
         self.player.dir = 'left'
+        return final
 
     def _right_action(self):
         """
@@ -203,14 +255,17 @@ class Level:
         """
         collision_test = self.player.rect.move(self.player.speed, 0). \
             collidelist(self.interpreted)
+        final = self.player.speed
         if collision_test != -1:
             delta = math.fabs(self.interpreted[collision_test].x -
                               (self.player.rect.x + self.player.rect.width))
             self.player.move(delta, 0)
+            final = delta
         else:
             self._bg_left()
             self.player.move(self.player.speed, 0)
         self.player.dir = 'right'
+        return final
 
     def update(self, movement):
         """
@@ -221,7 +276,9 @@ class Level:
 
         :param movement: Dict with keys *up, down, left, right* mapping to booleans
         """
-        self._gravity()
+        gravity = self._gravity()
+        left = 0
+        right = 0
 
         if self._jump_condition(movement):
             self.player.start_jump()
@@ -230,15 +287,20 @@ class Level:
             self._jump_action()
 
         if movement['left']:
-            self._left_action()
+            left = self._left_action()
 
         if movement['right']:
-            self._right_action()
+            right = self._right_action()
+
+        left = abs(left)
+        right = abs(right)
+        gravity = abs(gravity)
+        v_sum = (left + right, gravity)
 
         for a in self.animations:
             a[0].update()
         self.player.update()
-        self.camera.update(self.player.rect)
+        self.camera.update(self.player.rect, custom_speed=v_sum)
 
     def get_dimensions(self):
         """
@@ -382,12 +444,13 @@ class LevelManager:
         separator = as_list.index("")
         config = parse_config(as_list[0:separator])
         data = LevelManager._parse_level(as_list[separator + 1:])
-        tiles = self.loader.load_all(path + ["tiles"])
+        tiles = self.loader.load_all(path + ["tiles"], True)
         backgrounds = self.loader.load_all(path + ["backgrounds"], True)
         animations = []
-        for folder, interval, x, y in config['animations']:
-            surfs = self.loader.load_all_frames(path + ["animations", folder], True)
-            animations.append((Animation(surfs, interval), (x, y)))
+        if 'animations' in config:
+            for folder, interval, x, y in config['animations']:
+                surfs = self.loader.load_all_frames(path + ["animations", folder], True)
+                animations.append((Animation(surfs, interval), (x, y)))
         self.levels.append(Level(config, data, tiles, player=self.player,
                                  backgrounds=backgrounds, animations=animations))
 
